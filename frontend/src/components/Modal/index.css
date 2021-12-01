@@ -1,0 +1,213 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+@import url("https://use.fontawesome.com/releases/v5.14.0/css/all.css");
+
+.modal {
+  background-color: #fff;
+  box-shadow: 5px 8px 20px rgb(190, 190, 190);
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-direction: column;
+  border-radius: 0.5em;
+  position: absolute;
+  top: 18em;
+  left: 32em;
+  padding-bottom: 2.5em;
+  padding-right: 1em;
+  z-index: 1;
+}
+
+.close-modal-button {
+  height: 2.5vh;
+  width: 2vw;
+  display: flex;
+  align-self: flex-end;
+  margin-left: 4em;
+  margin-top: 0.8em;
+  margin-bottom: 1em;
+  color: rgb(206, 206, 206);
+}
+
+.close-modal-button:hover {
+  color: rgb(180, 180, 180);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.modal .user-input {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  flex-direction: column;
+  margin-left: 2em;
+}
+
+input {
+  outline: none !important;
+  border: none !important;
+  font-family: "Roboto", sans-serif;
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 1em;
+  margin: 0.5em;
+  background-color: rgb(238, 238, 238);
+  border-radius: 0.4em;
+}
+
+input:hover {
+  background-color: rgb(231, 231, 231);
+  transition: all 0.1s ease;
+}
+
+.save-badge {
+  background-color: rgb(136, 77, 192);
+  color: #fff;
+  margin: 1.2em 0em 0em 2.7em;
+}
+
+.save-badge:hover {
+  background-color: rgb(98, 4, 185);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.url-input {
+  width: 33.75vw;
+  background: rgb(245, 245, 245);
+}
+
+.newBadgeField {
+  border: rgb(202, 202, 202) solid 1px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 0.2em;
+  margin: 1em 3em;
+  width: 16.2vw;
+}
+
+.new-badge-input {
+  background: none;
+  border: none;
+  padding: 0.6em;
+}
+
+.fa-plus-circle {
+  margin: 0em 0.3em;
+}
+.fa-plus-circle:hover {
+  color: rgb(173, 173, 173);
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+
+.user-input .css-2m9kme-MuiFormControl-root {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  width: 70vw;
+}
+
+.badge-formControl {
+  display: flex;
+  /* align-items: center;
+  justify-content: space-around; */
+  flex-direction: column;
+}
+
+.badge-formControl .add-newBadge {
+  background: rgb(173, 3, 196);
+  border-radius: 0.2em;
+  color: #fff;
+}
+
+.badge-formControl .add-newBadge:hover {
+  background: rgb(149, 2, 168);
+  transition: all 0.1s ease;
+  color: #fff;
+}
+
+
+.badge-formControl .addbadge-input {
+  display: flex;
+  align-items: center;
+  width: 34.6vw;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+  background: rgb(238, 238, 238);
+  padding: 0.5em;
+  border-radius: 0.4em;
+}
+
+.badge-formControl .addbadge-input input:hover {
+  background-color: rgb(231, 231, 231);
+  transition: all 0.1s ease;
+}
+
+.badge-formControl .addbadge-input input{
+  padding: 0;
+  background: none;
+}
+
+.badge-formControl .addbadge-input input:hover{
+  background: none;
+}
+
+.selected-badges {
+  background-color: rgb(238, 238, 238);
+  border-radius: 0.2em;
+  padding: 1em 0.8em;
+  margin-left: 2.6em;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 34vw;
+}
+
+.selected-badges:hover {
+  background-color: rgb(228, 228, 228);
+  transition: all 0.1s ease;
+}
+
+.selected-badges .new-added-badge {
+  margin: 0.3em;
+}
+
+.selected-badges .placeholder {
+  color: rgb(75, 75, 75);
+  font-family: "Roboto", sans-serif;
+}
+
+.show-suggestions{
+  margin: 0.75em 1em;
+  width: 25vw;
+  display: flex;
+  justify-content: space-around;
+}
+
+.show-suggestions .suggestion-badges:hover{
+  background: rgb(219, 219, 219);
+  transition: all 0.01s ease;
+}
+
+.imgPreview{
+  height: 8vh;
+  margin: 0.3em;
+}
+
+.suggestion-canvas{
+  margin: 0em 0.75em;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.logo-canvas{
+  margin: 0.5em 0.3em;
+}
+
