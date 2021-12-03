@@ -1,6 +1,6 @@
 .urlCard {
   background: rgb(158, 158, 158);
-  padding: 0.5em 1.2em;
+  padding: 1em 1.2em;
   margin: 1em;
   border-radius: 0.25em;
   color: #fff;
@@ -13,6 +13,7 @@
   background: white;
 }
 
-.urlCard .url-badges .css-1k430x0-MuiButtonBase-root-MuiChip-root{
+.urlCard .url-badges .css-1k430x0-MuiButtonBase-root-MuiChip-root {
   margin: 0em 0.3em;
 }
+

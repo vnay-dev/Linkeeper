@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chip from "@mui/material/Chip";
-import ClearIcon from "@mui/icons-material/Clear";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUrl, popBadgesFromUrl } from "../../redux/Urls/action";
 
@@ -10,9 +10,11 @@ const UrlCard = ({ url, badges, urlId }) => {
 
   const [badgeArrEmpty, setBadgeArrayEmpty] = useState(false);
 
+  const deleteBinIcon = useRef();
+
   const checkBadgeArrayEmpty = (id) => {
     urlArray.urls.filter((item) => {
-      if (item.badges.length == 0) {
+      if (item.badges.length === 0) {
         setBadgeArrayEmpty(true);
       }
     });
@@ -37,6 +39,18 @@ const UrlCard = ({ url, badges, urlId }) => {
     }
   }, [badgeArrEmpty]);
 
+  useEffect(() => {
+    deleteBinIcon.current.style.visibility = "hidden";
+  }, [deleteBinIcon]);
+
+  const showBinIcon = () => {
+    deleteBinIcon.current.style.visibility = "visible";
+  };
+
+  const hideBinIcon = () => {
+    deleteBinIcon.current.style.visibility = "hidden";
+  };
+
   return (
     <div className="urlCard">
       <span>{url}</span>
@@ -57,11 +71,18 @@ const UrlCard = ({ url, badges, urlId }) => {
             })
           : null}
       </div>
-      <ClearIcon
-        sx={{ fontSize: 25 }}
-        className="close-modal-button"
-        onClick={removeUrl}
-      />
+      <div
+        className="delete-bin-icon"
+        onMouseEnter={showBinIcon}
+        onMouseLeave={hideBinIcon}
+      >
+        <DeleteIcon
+          ref={deleteBinIcon}
+          sx={{ fontSize: 25 }}
+          className="delete-modal-button"
+          onClick={removeUrl}
+        />
+      </div>
     </div>
   );
 };

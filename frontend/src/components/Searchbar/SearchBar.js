@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { stopSearch, triggerSearchAction } from "../../redux/SearchBar/actions";
+import { stopSearch, triggerSearchAction } from "../../redux/SearchBar/action";
 
 const SearchBar = () => {
   const [queryBadge, setQueryBadge] = useState("");

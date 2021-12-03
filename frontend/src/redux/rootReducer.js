@@ -4,7 +4,8 @@ import ModalReducer from "./Modal/reducer";
 import UrlReducer from "./Urls/reducer";
 import ErrorReducer from "./Error/reducer";
 import BadgeReducer from "./Badges/reducer";
-import SearchFilterReducer from "./SearchBar/reducers";
+import SearchFilterReducer from "./SearchBar/reducer";
+import LoaderReducer from "./Loader/reducer";
 
 const rootReducer = combineReducers({
   BtnReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   ErrorReducer,
   BadgeReducer,
   SearchFilterReducer,
+  LoaderReducer,
 });
 
 export default rootReducer;

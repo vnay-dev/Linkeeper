@@ -19,13 +19,15 @@ import Dropdown from "../Dropdown";
 import axios from "axios";
 import validUrl from "valid-url";
 import AddIcon from "@mui/icons-material/Add";
+import ReactLoading from "react-loading";
+import { showLoader, stopLoader } from "../../redux/Loader/action";
 
 const Modal = () => {
   const dispatch = useDispatch();
 
   const modalState = useSelector((state) => state.ModalReducer);
   const badgeStoreArray = useSelector((state) => state.BadgeReducer);
-  //const errorState = useSelector((state) => state.ErrorReducer);
+  const loaderState = useSelector((state) => state.LoaderReducer);
 
   const [urlText, setUrlText] = useState("");
   const [dropDownArray, setDropDownArray] = useState([]);
@@ -138,32 +140,6 @@ const Modal = () => {
     newBadgeInput.current.value = "";
   };
 
-  // useEffect(() => {
-  //   console.log("current badge  array", currentBadgeArray);
-  // }, [currentBadgeArray]);
-
-  // useEffect(() => {
-  //   console.log("dropdownarray", dropDownArray);
-  // }, [dropDownArray]);
-
-  // useEffect(() => {
-  //   console.log(badgeStoreArray.currentBadges);
-  //   // if (badgeStoreArray.badgeSelectedFlag) {
-  //   //   newBadgeInput.current.value = "";
-  //   // }
-  // }, [badgeStoreArray]);
-
-  // const keyWordGen = (host) => {
-  //   let keyWord = host;
-  //   if (keyWord.includes("www.")) {
-  //     keyWord = keyWord.replace("www.", "");
-  //   }
-  //   if (keyWord.includes(".com")) {
-  //     keyWord = keyWord.replace(".com", "");
-  //   }
-  //   return keyWord;
-  // };
-
   const validateUrl = (string) => {
     if (validUrl.isUri(string)) {
       return true;
@@ -175,10 +151,8 @@ const Modal = () => {
     setUrlText(e.target.value);
     if (e.target.value && validateUrl(e.target.value)) {
       dispatch(closeError());
-      //const { hostname } = new URL(e.target.value);
-      //let searchQuery = keyWordGen(hostname);
       axios
-        .post("http://localhost:5000/parse", {
+        .post("https://linkeeper-backend.herokuapp.com/parse", {
           url: e.target.value,
         })
         .then((res) => {
@@ -228,16 +202,19 @@ const Modal = () => {
   }, [badgeStoreArray]);
 
   useEffect(() => {
-    if (urlText === "") {
-      dispatch(closeError());
+    if (suggestionsArr.length && imageUrl) {
+      dispatch(stopLoader());
     }
-  }, [urlText]);
+  }, [suggestionsArr, imageUrl]);
 
   useEffect(() => {
-    if (suggestionsArr.length) {
-      console.log(suggestionsArr);
+    if (urlText) {
+      dispatch(showLoader());
+    } else {
+      dispatch(closeError());
+      dispatch(stopLoader());
     }
-  }, [suggestionsArr]);
+  }, [urlText]);
 
   return (
     <>
@@ -254,6 +231,15 @@ const Modal = () => {
               onChange={(e) => setUrl(e)}
               className="url-input"
             />
+            {loaderState.visibility && (
+              <ReactLoading
+                type={"bubbles"}
+                color="rgb(155, 155, 155)"
+                height={"2%"}
+                width={"5%"}
+                className="loader"
+              />
+            )}
             <div className="suggestion-canvas">
               {suggestionsArr.length ? (
                 <div className="show-suggestions">

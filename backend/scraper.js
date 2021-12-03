@@ -5,13 +5,20 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const parser = require("word-salience");
-const axios = require("axios");
+const dotenv = require("dotenv");
 
 app.use(cors());
 const jsonParser = bodyParser.json();
+dotenv.config();
 
-app.listen(5000, () => {
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
   console.log("server running...");
+});
+
+app.get("/", (req, res) => {
+  res.send("welcome to linkeeper");
 });
 
 const fetchKeyWords = (url) => {
