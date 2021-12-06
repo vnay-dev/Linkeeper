@@ -9,6 +9,7 @@ const UrlCard = ({ url, badges, urlId }) => {
   const urlArray = useSelector((state) => state.UrlReducer);
 
   const [badgeArrEmpty, setBadgeArrayEmpty] = useState(false);
+  const [onHover, setOnHover] = useState(false);
 
   const deleteBinIcon = useRef();
 
@@ -39,18 +40,6 @@ const UrlCard = ({ url, badges, urlId }) => {
     }
   }, [badgeArrEmpty]);
 
-  useEffect(() => {
-    deleteBinIcon.current.style.visibility = "hidden";
-  }, [deleteBinIcon]);
-
-  const showBinIcon = () => {
-    deleteBinIcon.current.style.visibility = "visible";
-  };
-
-  const hideBinIcon = () => {
-    deleteBinIcon.current.style.visibility = "hidden";
-  };
-
   return (
     <div className="urlCard">
       <span>{url}</span>
@@ -71,17 +60,8 @@ const UrlCard = ({ url, badges, urlId }) => {
             })
           : null}
       </div>
-      <div
-        className="delete-bin-icon"
-        onMouseEnter={showBinIcon}
-        onMouseLeave={hideBinIcon}
-      >
-        <DeleteIcon
-          ref={deleteBinIcon}
-          sx={{ fontSize: 25 }}
-          className="delete-modal-button"
-          onClick={removeUrl}
-        />
+      <div className="delete-bin-icon">
+        <DeleteIcon sx={{ fontSize: 25 }} onClick={removeUrl} />
       </div>
     </div>
   );

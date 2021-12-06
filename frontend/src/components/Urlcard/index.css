@@ -17,3 +17,10 @@
   margin: 0em 0.3em;
 }
 
+.delete-bin-icon {
+  opacity: 0;
+}
+.delete-bin-icon:hover {
+  opacity: 1;
+  transition: 0.3s;
+}
