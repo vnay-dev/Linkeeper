@@ -1,12 +1,15 @@
 import {
+  ADD_BADGE_FROM_DROPDOWN,
   RESET_TOGGLE_KEYDOWN,
   RESET_TOGGLE_KEYUP,
   TOGGLE_KEYDOWN_SELECT,
   TOGGLE_KEYUP_SELECT,
+  RESET_BADGE_FROM_DROPDOWN,
 } from "./types";
 
 const initialState = {
   cursor: 0,
+  badgeAddRequest: false,
 };
 
 const DropDownReducer = (state = initialState, action) => {
@@ -27,7 +30,14 @@ const DropDownReducer = (state = initialState, action) => {
       return {
         cursor: action.payload,
       };
-
+    case ADD_BADGE_FROM_DROPDOWN:
+      return {
+        badgeAddRequest: true,
+      };
+    case RESET_BADGE_FROM_DROPDOWN:
+      return {
+        badgeAddRequest: false,
+      };
     default:
       return state;
   }

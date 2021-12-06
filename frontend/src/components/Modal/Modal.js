@@ -22,6 +22,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ReactLoading from "react-loading";
 import { showLoader, stopLoader } from "../../redux/Loader/action";
 import {
+  addBadgeFromDropDown,
   resetToggleKeyDown,
   resetToggleKeyUp,
   toggleKeyDown,
@@ -213,6 +214,8 @@ const Modal = () => {
       } else {
         dispatch(toggleKeyUp());
       }
+    } else if (e.keyCode === 13) {
+      dispatch(addBadgeFromDropDown());
     }
   };
 

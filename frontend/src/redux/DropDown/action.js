@@ -1,4 +1,6 @@
 import {
+  ADD_BADGE_FROM_DROPDOWN,
+  RESET_BADGE_FROM_DROPDOWN,
   RESET_TOGGLE_KEYDOWN,
   RESET_TOGGLE_KEYUP,
   TOGGLE_KEYDOWN_SELECT,
@@ -27,5 +29,17 @@ export const resetToggleKeyUp = (data) => {
   return {
     type: RESET_TOGGLE_KEYUP,
     payload: data,
+  };
+};
+
+export const addBadgeFromDropDown = () => {
+  return {
+    type: ADD_BADGE_FROM_DROPDOWN,
+  };
+};
+
+export const resetAddBadgeFromDropDown = () => {
+  return {
+    type: RESET_BADGE_FROM_DROPDOWN,
   };
 };
