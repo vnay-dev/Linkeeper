@@ -9,8 +9,7 @@ const UrlCard = ({ url, badges, urlId }) => {
   const urlArray = useSelector((state) => state.UrlReducer);
 
   const [badgeArrEmpty, setBadgeArrayEmpty] = useState(false);
-  const [onHover, setOnHover] = useState(false);
-
+  
   const deleteBinIcon = useRef();
 
   const checkBadgeArrayEmpty = (id) => {

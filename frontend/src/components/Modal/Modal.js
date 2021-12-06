@@ -21,6 +21,12 @@ import validUrl from "valid-url";
 import AddIcon from "@mui/icons-material/Add";
 import ReactLoading from "react-loading";
 import { showLoader, stopLoader } from "../../redux/Loader/action";
+import {
+  resetToggleKeyDown,
+  resetToggleKeyUp,
+  toggleKeyDown,
+  toggleKeyUp,
+} from "../../redux/DropDown/action";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -28,6 +34,7 @@ const Modal = () => {
   const modalState = useSelector((state) => state.ModalReducer);
   const badgeStoreArray = useSelector((state) => state.BadgeReducer);
   const loaderState = useSelector((state) => state.LoaderReducer);
+  const dropDrownToggle = useSelector((state) => state.DropDownReducer);
 
   const [urlText, setUrlText] = useState("");
   const [dropDownArray, setDropDownArray] = useState([]);
@@ -193,6 +200,22 @@ const Modal = () => {
     }
   };
 
+  const toggleDropdownSelect = (e) => {
+    if (e.keyCode === 40) {
+      if (dropDrownToggle.cursor >= dropDownArray.length - 1) {
+        dispatch(resetToggleKeyDown());
+      } else {
+        dispatch(toggleKeyDown());
+      }
+    } else if (e.keyCode === 38) {
+      if (dropDrownToggle.cursor <= 0) {
+        dispatch(resetToggleKeyUp(dropDownArray.length - 1));
+      } else {
+        dispatch(toggleKeyUp());
+      }
+    }
+  };
+
   useEffect(() => {
     if (badgeStoreArray.badgeSelectedFlag) {
       newBadgeInput.current.value = "";
@@ -259,6 +282,7 @@ const Modal = () => {
             <div className="badge-formControl">
               <div className="addbadge-input">
                 <input
+                  onKeyDown={(e) => toggleDropdownSelect(e)}
                   ref={newBadgeInput}
                   className="newBadgeInput"
                   onChange={(e) => searchBadge(e.target.value)}
