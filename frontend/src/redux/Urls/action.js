@@ -1,4 +1,9 @@
-import { ADD_URL, DELETE_URL, POP_BADGES_FROM_URL } from "./types";
+import {
+  ADD_URL,
+  DELETE_URL,
+  DUPLICATE_URL_CHECK,
+  POP_BADGES_FROM_URL,
+} from "./types";
 
 export const addUrl = (data) => {
   return {
@@ -19,4 +24,11 @@ export const popBadgesFromUrl = (data) => {
     type: POP_BADGES_FROM_URL,
     payload: data,
   };
-};  
+};
+
+export const duplicateUrlCheck = (data) => {
+  return {
+    type: DUPLICATE_URL_CHECK,
+    payload: data,
+  };
+};

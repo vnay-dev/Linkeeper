@@ -15,7 +15,6 @@ const Dropdown = ({ listArray }) => {
   };
 
   const addItem = (selectedBadge) => {
-    console.log(selectedBadge);
     let itemFound = badgeStoreArray.currentBadges.find((item) => {
       return item.match(selectedBadge);
     });

@@ -3,7 +3,7 @@ import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/Modal/action";
 import { closeError, showError } from "../../redux/Error/action";
-import { addUrl } from "../../redux/Urls/action";
+import { addUrl, duplicateUrlCheck } from "../../redux/Urls/action";
 
 import Chip from "@mui/material/Chip";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -36,6 +36,7 @@ const Modal = () => {
   const badgeStoreArray = useSelector((state) => state.BadgeReducer);
   const loaderState = useSelector((state) => state.LoaderReducer);
   const dropDrownToggle = useSelector((state) => state.DropDownReducer);
+  const urlState = useSelector((state) => state.UrlReducer);
 
   const [urlText, setUrlText] = useState("");
   const [dropDownArray, setDropDownArray] = useState([]);
@@ -159,14 +160,7 @@ const Modal = () => {
     setUrlText(e.target.value);
     if (e.target.value && validateUrl(e.target.value)) {
       dispatch(closeError());
-      axios
-        .post("https://linkeeper-backend.herokuapp.com/parse", {
-          url: e.target.value,
-        })
-        .then((res) => {
-          setSuggestionsArr(res.data.results);
-          setImageUrl(res.data.logo);
-        });
+      dispatch(duplicateUrlCheck(e.target.value));
     } else {
       dispatch(showError({ type: "error", message: "Invalid url format" }));
     }
@@ -241,6 +235,23 @@ const Modal = () => {
       dispatch(stopLoader());
     }
   }, [urlText]);
+
+  useEffect(() => {
+    if (urlState.duplicateUrl) {
+      dispatch(
+        dispatch(showError({ type: "error", message: "Url already exist!" }))
+      );
+    } else {
+      axios
+        .post("https://linkeeper-backend.herokuapp.com/parse", {
+          url: urlText,
+        })
+        .then((res) => {
+          setSuggestionsArr(res.data.results);
+          setImageUrl(res.data.logo);
+        });
+    }
+  }, [urlState]);
 
   return (
     <>
