@@ -35,6 +35,7 @@ function App() {
               url={item.url}
               badges={item.badges}
               urlId={item.itemId}
+              title={item.title}
             />
           );
         })
@@ -50,6 +51,7 @@ function App() {
               url={item.url}
               badges={item.badges}
               urlId={item.itemId}
+              title={item.title}
             />
           );
         })

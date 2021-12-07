@@ -44,6 +44,7 @@ const Modal = () => {
   const [showNewBadgeAddBtn, setShowNewbadgeAddBtn] = useState(false);
   const [suggestionsArr, setSuggestionsArr] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+  const [shortUrlTitle, setShortUrlTitle] = useState("");
 
   const closeModalView = () => {
     dispatch(closeModal());
@@ -90,6 +91,7 @@ const Modal = () => {
           itemId: id,
           url: urlText,
           badges: badgeStoreArray.currentBadges,
+          title: shortUrlTitle,
         })
       );
       dispatch(closeModal()); // do this once the data addition is success
@@ -243,12 +245,14 @@ const Modal = () => {
       );
     } else {
       axios
-        .post("https://linkeeper-backend.herokuapp.com/parse", {
+        // .post("https://linkeeper-backend.herokuapp.com/parse", {
+        .post("http://localhost:5000/parse", {
           url: urlText,
         })
         .then((res) => {
           setSuggestionsArr(res.data.results);
           setImageUrl(res.data.logo);
+          setShortUrlTitle(res.data.title);
         });
     }
   }, [urlState]);
@@ -279,8 +283,11 @@ const Modal = () => {
             )}
             <div className="suggestion-canvas">
               {suggestionsArr.length ? (
-                <div className="show-suggestions">
-                  {suggestionsArr.length ? showRecommendation() : null}
+                <div className="preview-suggestions">
+                  <span>In short : {shortUrlTitle}</span>
+                  <div className="show-suggestions">
+                    {suggestionsArr.length ? showRecommendation() : null}
+                  </div>
                 </div>
               ) : null}
               {imageUrl && (

@@ -24,3 +24,13 @@
   opacity: 1;
   transition: 0.3s;
 }
+
+.urlCard a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.urlCard a:hover{
+  color: black;
+  transition: 0.2s ease;
+}

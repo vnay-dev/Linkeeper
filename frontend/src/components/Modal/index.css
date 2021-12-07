@@ -217,3 +217,8 @@ input:hover {
 .loader{
   margin-left: 0.75em;
 }
+
+.preview-suggestions{
+  display: flex;
+  flex-direction: column;
+}

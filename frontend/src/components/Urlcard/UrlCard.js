@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chip from "@mui/material/Chip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUrl, popBadgesFromUrl } from "../../redux/Urls/action";
 
-const UrlCard = ({ url, badges, urlId }) => {
+const UrlCard = ({ url, badges, urlId, title }) => {
   const dispatch = useDispatch();
   const urlArray = useSelector((state) => state.UrlReducer);
 
@@ -39,7 +39,9 @@ const UrlCard = ({ url, badges, urlId }) => {
 
   return (
     <div className="urlCard">
-      <span>{url}</span>
+      <a href={url} target="_blank" rel="noreferrer">
+        <span>{title}</span>
+      </a>
       <div className="url-badges">
         {badges.length
           ? badges.map((item, index) => {

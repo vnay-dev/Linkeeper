@@ -17,9 +17,9 @@ app.listen(PORT, () => {
   console.log("server running...");
 });
 
-app.get("/", (req, res) => {
-  res.send("welcome to linkeeper");
-});
+// app.get("/", (req, res) => {
+//   res.send("welcome to linkeeper");
+// });
 
 const fetchKeyWords = (url) => {
   const keywordsMeta = url('meta[name="keywords"]').attr("content");
@@ -61,9 +61,13 @@ app.post("/parse", jsonParser, (req, res) => {
       let results = keyWordFlag + " " + titleFlag + " " + descriptionFlag;
       let parsedResult = parser.getSalientWords(results).slice(0, 5);
       let logoImgUrl = fetchDomainName(req.body.url);
+      let shortTitleParent = titleFlag.split(/[.^$*+-?()[]{}\/|—]/);
+      let shortTitle = shortTitleParent[0];
+     
       return res.send({
         results: parsedResult,
         logo: logoImgUrl,
+        title: shortTitle,
       });
     }
   });
