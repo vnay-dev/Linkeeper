@@ -17,10 +17,6 @@ app.listen(PORT, () => {
   console.log("server running...");
 });
 
-// app.get("/", (req, res) => {
-//   res.send("welcome to linkeeper");
-// });
-
 const fetchKeyWords = (url) => {
   const keywordsMeta = url('meta[name="keywords"]').attr("content");
   if (keywordsMeta) {

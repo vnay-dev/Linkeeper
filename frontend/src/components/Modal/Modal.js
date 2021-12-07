@@ -245,8 +245,7 @@ const Modal = () => {
       );
     } else {
       axios
-        // .post("https://linkeeper-backend.herokuapp.com/parse", {
-        .post("http://localhost:5000/parse", {
+        .post("https://linkeeper-backend.herokuapp.com/parse", {
           url: urlText,
         })
         .then((res) => {
