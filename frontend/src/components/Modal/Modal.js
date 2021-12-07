@@ -107,7 +107,7 @@ const Modal = () => {
     if (value) {
       dispatch(closeError());
       const availableBadges = badgeStoreArray.badges.filter((item) => {
-        return item.includes(value);
+        return item.toLowerCase().includes(value.toLowerCase());
       });
       if (availableBadges.length) {
         setDropDownArray(availableBadges);

@@ -13,20 +13,14 @@ const SearchFilterReducer = (state = initialState, action) => {
       let filteredArray = [];
 
       if (searchText !== "") {
-        urlArray.filter((item) => {
-          let tempBadgeArr = item.badges;
+        filteredArray = urlArray.filter((item) => {
           let urlCard = item;
-          let resultArr = tempBadgeArr.map((badge) => {
-            return badge.includes(searchText);
-          });
-          return resultArr.forEach((item) => {
-            if (item) {
-              filteredArray.push(urlCard);
-            }
-          });
+          let tempBadgeArr = item.badges;
+          let resultArr = tempBadgeArr.filter((item) =>
+            item.toLowerCase().includes(searchText.toLowerCase())
+          );
+          return resultArr.length ? urlCard : null;
         });
-      } else {
-        filteredArray = [];
       }
 
       return {

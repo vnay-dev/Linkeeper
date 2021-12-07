@@ -198,7 +198,8 @@ input:hover {
 }
 
 .imgPreview{
-  height: 8vh;
+  width: 75%;
+  height: 50%;
   margin: 0.3em;
 }
 
