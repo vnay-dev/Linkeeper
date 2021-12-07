@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBadge, badgeSelected } from "../../redux/Badges/action";
 import { resetAddBadgeFromDropDown } from "../../redux/DropDown/action";
@@ -6,6 +6,7 @@ import { showError } from "../../redux/Error/action";
 
 const Dropdown = ({ listArray }) => {
   const dispatch = useDispatch();
+  const selectedBadge = useRef();
   const badgeStoreArray = useSelector((state) => state.BadgeReducer);
   const dropDownToggle = useSelector((state) => state.DropDownReducer);
 
@@ -14,6 +15,7 @@ const Dropdown = ({ listArray }) => {
   };
 
   const addItem = (selectedBadge) => {
+    console.log(selectedBadge);
     let itemFound = badgeStoreArray.currentBadges.find((item) => {
       return item.match(selectedBadge);
     });
@@ -27,8 +29,22 @@ const Dropdown = ({ listArray }) => {
     dispatch(resetAddBadgeFromDropDown());
   };
 
+  useEffect(() => {
+    let badgePicked;
+    if (dropDownToggle.badgeAddRequest) {
+      badgePicked = Object.values(selectedBadge.current.children).filter(
+        (item) => {
+          return item.className === "addHighLightItem";
+        }
+      );
+    }
+    if (badgePicked) {
+      addItem(badgePicked[0].textContent);
+    }
+  }, [dropDownToggle]);
+
   return (
-    <div className="dropdown">
+    <div className="dropdown" ref={selectedBadge}>
       {listArray.map((item, index) => {
         return (
           <span

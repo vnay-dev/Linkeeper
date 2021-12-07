@@ -17,25 +17,31 @@ const DropDownReducer = (state = initialState, action) => {
     case TOGGLE_KEYDOWN_SELECT:
       return {
         cursor: state.cursor + 1,
+        badgeAddRequest: state.badgeAddRequest,
       };
     case TOGGLE_KEYUP_SELECT:
       return {
         cursor: state.cursor - 1,
+        badgeAddRequest: state.badgeAddRequest,
       };
     case RESET_TOGGLE_KEYDOWN:
       return {
         cursor: 0,
+        badgeAddRequest: state.badgeAddRequest,
       };
     case RESET_TOGGLE_KEYUP:
       return {
         cursor: action.payload,
+        badgeAddRequest: state.badgeAddRequest,
       };
     case ADD_BADGE_FROM_DROPDOWN:
       return {
+        cursor: state.cursor,
         badgeAddRequest: true,
       };
     case RESET_BADGE_FROM_DROPDOWN:
       return {
+        cursor: state.cursor,
         badgeAddRequest: false,
       };
     default:
