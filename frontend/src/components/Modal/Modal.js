@@ -28,6 +28,7 @@ import {
   toggleKeyDown,
   toggleKeyUp,
 } from "../../redux/DropDown/action";
+import BadgeContainer from "../BadgeContainer";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -170,15 +171,14 @@ const Modal = () => {
 
   const addBadgeFromRecommendation = (selectedBadge) => {
     let itemFound = badgeStoreArray.currentBadges.find((item) => {
-      return item.match(selectedBadge.target.textContent);
+      return item.match(selectedBadge);
     });
-
     if (!!itemFound) {
       showDuplicateBadgeError();
     } else {
-      dispatch(addNewBadge(selectedBadge.target.textContent));
-      dispatch(addBadge(selectedBadge.target.textContent));
-      dispatch(badgeSelected(selectedBadge.target.textContent));
+      dispatch(addNewBadge(selectedBadge));
+      dispatch(addBadge(selectedBadge));
+      dispatch(badgeSelected(selectedBadge));
     }
   };
 
@@ -186,11 +186,17 @@ const Modal = () => {
     if (suggestionsArr.length) {
       return suggestionsArr.map((item, index) => {
         return (
-          <Chip
+          // <Chip
+          //   key={index}
+          //   label={item[0]}
+          //   className="suggestion-badges"
+          //   onClick={addBadgeFromRecommendation}
+          // />
+          <BadgeContainer
             key={index}
             label={item[0]}
-            className="suggestion-badges"
-            onClick={addBadgeFromRecommendation}
+            onClick={() => addBadgeFromRecommendation(item[0])}
+            status={"add"}
           />
         );
       });
@@ -221,6 +227,7 @@ const Modal = () => {
       dispatch(badgeUnselected());
       setShowDropdown(false);
     }
+    console.log(badgeStoreArray.currentBadges);
   }, [badgeStoreArray]);
 
   useEffect(() => {
@@ -330,11 +337,18 @@ const Modal = () => {
               badgeStoreArray.currentBadges.map((item, index) => {
                 let badgeText = item;
                 return (
-                  <Chip
+                  // <Chip
+                  //   key={index}
+                  //   className="new-added-badge"
+                  //   label={item}
+                  //   onDelete={() => handleDelete(badgeText)}
+                  // />
+                  <BadgeContainer
                     key={index}
-                    className="new-added-badge"
                     label={item}
+                    status={"none"}
                     onDelete={() => handleDelete(badgeText)}
+                    // onClick={() => addBadgeFromRecommendation(item[0])}
                   />
                 );
               })

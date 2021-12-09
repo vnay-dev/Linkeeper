@@ -222,3 +222,7 @@ input:hover {
   display: flex;
   flex-direction: column;
 }
+
+.preview-suggestions span{
+  font-family: "Roboto", sans-serif;
+}

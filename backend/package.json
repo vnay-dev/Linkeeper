@@ -19,5 +19,8 @@
     "parse-favicon": "^4.0.15",
     "request": "^2.88.2",
     "word-salience": "^0.0.11"
+  },
+  "engines": {
+    "node": "17.1.0"
   }
 }

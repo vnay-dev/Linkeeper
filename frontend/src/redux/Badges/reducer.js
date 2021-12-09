@@ -51,7 +51,8 @@ const BadgeReducer = (state = initialState, action) => {
       });
       return {
         badges: state.badges,
-        currentBadges: currentBadgesAfterDeletion,
+        //currentBadges: currentBadgesAfterDeletion,
+        currentBadges: state.currentBadges,
         badgeSelectedFlag: state.badgeSelectedFlag,
       };
     default:
