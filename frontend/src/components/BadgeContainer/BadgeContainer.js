@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -14,26 +14,24 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
   const [deleteAction, setDeleteAction] = useState(false);
 
   const dispatch = useDispatch();
+  const parentContainer = useRef();
 
   const unSelectBadge = () => {
     onDelete();
     setDeleteAction(true);
   };
 
-  const addBackBadge = () => {
+  const addBackBadge = (e) => {
     setDeleteAction(false);
     setShowDeleteBtn(false);
-    // dispatch(addNewBadge(selectedBadge));
-    // dispatch(addBadge(selectedBadge));
-    // dispatch(badgeSelected(selectedBadge));
+    let selectedBadge = parentContainer.current.children[0].textContent;
+    dispatch(addNewBadge(selectedBadge));
+    dispatch(addBadge(selectedBadge));
+    dispatch(badgeSelected(selectedBadge));
   };
 
-  useEffect(() => {
-    console.log(label);
-  }, [label]);
-
   return (
-    <div className="badgeContainer" onClick={onClick}>
+    <div className="badgeContainer" ref={parentContainer} onClick={onClick}>
       <span>{label}</span>
       {status === "add" ? (
         <AddCircleOutlineIcon className="add-icon" />
@@ -50,7 +48,7 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
           <AddCircleOutlineIcon
             //className="add-icon"
             className={deleteAction ? "rotateIcon add-icon" : "add-icon"}
-            onClick={addBackBadge}
+            onClick={(e) => addBackBadge(e)}
           />
         )
       ) : (
