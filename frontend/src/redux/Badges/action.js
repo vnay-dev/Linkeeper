@@ -1,11 +1,13 @@
 import {
   ADD_BADGE,
   ADD_NEW_BADGE,
+  ADD_SELECTION_ACTIVITY_ARRAY,
   BADGE_SELECTED,
   BADGE_UNSELECTED,
   CLEAR_CURRENT_BADGE_LIST,
   POP_BADGE_FROM_CURRENT,
   POP_BADGE_FROM_GLOBAL,
+  RESET_SELECTION_ACTIVITY_ARRAY,
 } from "./types";
 
 export const addBadge = (data) => {
@@ -51,6 +53,19 @@ export const clearCurrentBadgeList = () => {
 export const removeBadgeFromGlobal = (data) => {
   return {
     type: POP_BADGE_FROM_GLOBAL,
+    payload: data,
+  };
+};
+
+export const resetSelectionActivityArray = () => {
+  return {
+    type: RESET_SELECTION_ACTIVITY_ARRAY,
+  };
+};
+
+export const addSelectionActivityArray = (data) => {
+  return {
+    type: ADD_SELECTION_ACTIVITY_ARRAY,
     payload: data,
   };
 };

@@ -16,6 +16,7 @@ const UrlReducer = (state = initialState, action) => {
       return {
         urls: [...state.urls, action.payload],
         duplicateUrl: state.duplicateUrl,
+        // selectionActivityArray: state.selectionActivityArray,
       };
 
     case DELETE_URL:
@@ -26,6 +27,7 @@ const UrlReducer = (state = initialState, action) => {
       return {
         urls: newArray,
         duplicateUrl: state.duplicateUrl,
+        // selectionActivityArray: state.selectionActivityArray,
       };
 
     case POP_BADGES_FROM_URL:
@@ -51,6 +53,7 @@ const UrlReducer = (state = initialState, action) => {
       return {
         urls: finalArray,
         duplicateUrl: state.duplicateUrl,
+        // selectionActivityArray: state.selectionActivityArray,
       };
 
     case DUPLICATE_URL_CHECK:
@@ -61,11 +64,13 @@ const UrlReducer = (state = initialState, action) => {
         return {
           urls: state.urls,
           duplicateUrl: true,
+          // selectionActivityArray: state.selectionActivityArray,
         };
       } else {
         return {
           urls: state.urls,
           duplicateUrl: false,
+          // selectionActivityArray: state.selectionActivityArray,
         };
       }
 

@@ -10,7 +10,10 @@ import {
   removeBadgeFromCurrent,
   removeBadgeFromGlobal,
 } from "../../redux/Badges/action";
-import { popBadgesFromUrl } from "../../redux/Urls/action";
+import {
+  addSelectionAcivityArray,
+  popBadgesFromUrl,
+} from "../../redux/Urls/action";
 
 const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
@@ -24,7 +27,7 @@ const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
     setDeleteAction(true);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(removeBadgeFromCurrent(selectedBadge));
-    dispatch(removeBadgeFromGlobal(selectedBadge));
+    // dispatch(removeBadgeFromGlobal(selectedBadge));
     //dispatch(popBadgesFromUrl({ badgeText: selectedBadge, urlId: urlId }));
   };
 
@@ -32,9 +35,10 @@ const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
     setDeleteAction(false);
     setShowDeleteBtn(false);
     let selectedBadge = parentContainer.current.children[0].textContent;
-    dispatch(addNewBadge(selectedBadge));
+    // dispatch(addNewBadge(selectedBadge));
     dispatch(addBadge(selectedBadge));
-    dispatch(badgeSelected(selectedBadge));
+    // dispatch(badgeSelected(selectedBadge));
+    // dispatch(addSelectionAcivityArray(selectedBadge));
   };
 
   // const removeBadge = (e) => {

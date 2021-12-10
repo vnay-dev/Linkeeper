@@ -3,17 +3,22 @@ import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/Modal/action";
 import { closeError, showError } from "../../redux/Error/action";
-import { addUrl, duplicateUrlCheck } from "../../redux/Urls/action";
+import {
+  addUrl,
+  duplicateUrlCheck,
+} from "../../redux/Urls/action";
 
 import Chip from "@mui/material/Chip";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   addBadge,
   addNewBadge,
+  addSelectionActivityArray,
   badgeSelected,
   badgeUnselected,
   clearCurrentBadgeList,
   removeBadgeFromCurrent,
+  resetSelectionActivityArray,
 } from "../../redux/Badges/action";
 import Dropdown from "../Dropdown";
 import axios from "axios";
@@ -89,17 +94,17 @@ const Modal = () => {
     if (flag) {
       dispatch(closeError());
       let id = createID();
-
       dispatch(
         addUrl({
           itemId: id,
           url: urlText,
-          badges: badgeStoreArray.filteredCurrentBadges,
+          badges: badgeStoreArray.currentBadges,
           title: shortUrlTitle,
         })
       );
       dispatch(closeModal()); // do this once the data addition is success
       dispatch(clearCurrentBadgeList());
+      dispatch(resetSelectionActivityArray());
     }
   };
 
@@ -141,7 +146,9 @@ const Modal = () => {
 
   const createNewBadge = () => {
     const newBadge = newBadgeInput.current.value;
-    setArrCurrent([...arrCurrent, newBadge]);
+    // setArrCurrent([...arrCurrent, newBadge]);
+    //dispatch(addSelectionActivityArray(newBadge));
+    //addNewBadgeAction(newBadge);
 
     // let itemFound = badgeStoreArray.currentBadges.find((item) => {
     //   return item.match(newBadge);
@@ -180,10 +187,12 @@ const Modal = () => {
     if (!!itemFound) {
       showDuplicateBadgeError();
     } else {
-      dispatch(addNewBadge(selectedBadge));
+      //dispatch(addNewBadge(selectedBadge));
       dispatch(addBadge(selectedBadge));
+      dispatch(addSelectionActivityArray(selectedBadge));
       dispatch(badgeSelected(selectedBadge));
-      setArrCurrent([...arrCurrent, selectedBadge]);
+      //setArrCurrent([...arrCurrent, selectedBadge]);
+      dispatch(addSelectionActivityArray(selectedBadge));
     }
   };
 
@@ -233,6 +242,7 @@ const Modal = () => {
       dispatch(badgeUnselected());
       setShowDropdown(false);
     }
+    console.log(badgeStoreArray.selectionActivityArray);
   }, [badgeStoreArray]);
 
   useEffect(() => {
@@ -251,6 +261,7 @@ const Modal = () => {
   }, [urlText]);
 
   useEffect(() => {
+    //console.log(urlState.selectionActivityArray)
     if (urlState.duplicateUrl) {
       dispatch(
         dispatch(showError({ type: "error", message: "Url already exist!" }))
@@ -363,8 +374,8 @@ const Modal = () => {
             ) : (
               <span className="placeholder">Badges... </span>
             )} */}
-            {arrCurrent.length ? (
-              arrCurrent.map((item, index) => {
+            {badgeStoreArray.selectionActivityArray.length ? (
+              badgeStoreArray.selectionActivityArray.map((item, index) => {
                 let badgeText = item;
                 return (
                   // <Chip
