@@ -5,6 +5,7 @@ import {
   BADGE_UNSELECTED,
   CLEAR_CURRENT_BADGE_LIST,
   POP_BADGE_FROM_CURRENT,
+  POP_BADGE_FROM_GLOBAL,
 } from "./types";
 
 export const addBadge = (data) => {
@@ -44,5 +45,12 @@ export const badgeUnselected = () => {
 export const clearCurrentBadgeList = () => {
   return {
     type: CLEAR_CURRENT_BADGE_LIST,
+  };
+};
+
+export const removeBadgeFromGlobal = (data) => {
+  return {
+    type: POP_BADGE_FROM_GLOBAL,
+    payload: data,
   };
 };

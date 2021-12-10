@@ -47,6 +47,8 @@ const Modal = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [shortUrlTitle, setShortUrlTitle] = useState("");
 
+  const [arrCurrent, setArrCurrent] = useState([]);
+
   const closeModalView = () => {
     dispatch(closeModal());
     dispatch(clearCurrentBadgeList());
@@ -65,7 +67,7 @@ const Modal = () => {
   };
 
   const badgeValidator = () => {
-    if (currentBadgeList.current.children[0].children.length) {
+    if (badgeStoreArray.currentBadges.length) {
       return true;
     } else {
       return false;
@@ -87,11 +89,12 @@ const Modal = () => {
     if (flag) {
       dispatch(closeError());
       let id = createID();
+
       dispatch(
         addUrl({
           itemId: id,
           url: urlText,
-          badges: badgeStoreArray.currentBadges,
+          badges: badgeStoreArray.filteredCurrentBadges,
           title: shortUrlTitle,
         })
       );
@@ -138,16 +141,17 @@ const Modal = () => {
 
   const createNewBadge = () => {
     const newBadge = newBadgeInput.current.value;
+    setArrCurrent([...arrCurrent, newBadge]);
 
-    let itemFound = badgeStoreArray.currentBadges.find((item) => {
-      return item.match(newBadge);
-    });
+    // let itemFound = badgeStoreArray.currentBadges.find((item) => {
+    //   return item.match(newBadge);
+    // });
 
-    if (!!itemFound) {
-      showDuplicateBadgeError();
-    } else {
-      addNewBadgeAction(newBadge);
-    }
+    // if (!!itemFound) {
+    //   showDuplicateBadgeError();
+    // } else {
+    //   addNewBadgeAction(newBadge);
+    // }
 
     newBadgeInput.current.value = "";
   };
@@ -179,6 +183,7 @@ const Modal = () => {
       dispatch(addNewBadge(selectedBadge));
       dispatch(addBadge(selectedBadge));
       dispatch(badgeSelected(selectedBadge));
+      setArrCurrent([...arrCurrent, selectedBadge]);
     }
   };
 
@@ -197,6 +202,7 @@ const Modal = () => {
             label={item[0]}
             onClick={() => addBadgeFromRecommendation(item[0])}
             status={"add"}
+            onDelete={() => handleDelete(item[0])}
           />
         );
       });
@@ -227,7 +233,6 @@ const Modal = () => {
       dispatch(badgeUnselected());
       setShowDropdown(false);
     }
-    console.log(badgeStoreArray.currentBadges);
   }, [badgeStoreArray]);
 
   useEffect(() => {
@@ -259,6 +264,9 @@ const Modal = () => {
           setSuggestionsArr(res.data.results);
           setImageUrl(res.data.logo);
           setShortUrlTitle(res.data.title);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
   }, [urlState]);
@@ -333,8 +341,30 @@ const Modal = () => {
             className="selected-badges"
             ref={currentBadgeList}
           >
-            {badgeStoreArray.currentBadges.length ? (
+            {/* {badgeStoreArray.currentBadges.length ? (
               badgeStoreArray.currentBadges.map((item, index) => {
+                let badgeText = item;
+                return (
+                  // <Chip
+                  //   key={index}
+                  //   className="new-added-badge"
+                  //   label={item}
+                  //   onDelete={() => handleDelete(badgeText)}
+                  // />
+                  <BadgeContainer
+                    key={index}
+                    label={item}
+                    status={"none"}
+                    onDelete={() => handleDelete(badgeText)}
+                    // onClick={() => addBadgeFromRecommendation(item[0])}
+                  />
+                );
+              })
+            ) : (
+              <span className="placeholder">Badges... </span>
+            )} */}
+            {arrCurrent.length ? (
+              arrCurrent.map((item, index) => {
                 let badgeText = item;
                 return (
                   // <Chip

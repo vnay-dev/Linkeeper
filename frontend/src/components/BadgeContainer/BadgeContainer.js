@@ -7,9 +7,12 @@ import {
   addBadge,
   addNewBadge,
   badgeSelected,
+  removeBadgeFromCurrent,
+  removeBadgeFromGlobal,
 } from "../../redux/Badges/action";
+import { popBadgesFromUrl } from "../../redux/Urls/action";
 
-const BadgeContainer = ({ label, onClick, status, onDelete }) => {
+const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const [deleteAction, setDeleteAction] = useState(false);
 
@@ -19,6 +22,10 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
   const unSelectBadge = () => {
     onDelete();
     setDeleteAction(true);
+    let selectedBadge = parentContainer.current.children[0].textContent;
+    dispatch(removeBadgeFromCurrent(selectedBadge));
+    dispatch(removeBadgeFromGlobal(selectedBadge));
+    //dispatch(popBadgesFromUrl({ badgeText: selectedBadge, urlId: urlId }));
   };
 
   const addBackBadge = (e) => {
@@ -29,6 +36,13 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
     dispatch(addBadge(selectedBadge));
     dispatch(badgeSelected(selectedBadge));
   };
+
+  // const removeBadge = (e) => {
+  //   let selectedBadge = parentContainer.current.children[0].textContent;
+  //   console.log(selectedBadge);
+  //   dispatch(removeBadgeFromCurrent(selectedBadge));
+  //   dispatch(removeBadgeFromGlobal(selectedBadge));
+  // };
 
   return (
     <div className="badgeContainer" ref={parentContainer} onClick={onClick}>
@@ -55,6 +69,7 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
         <CheckCircleOutlineIcon
           className="done-icon"
           onMouseEnter={() => setShowDeleteBtn(true)}
+          // onClick={(e) => removeBadge(e)}
         />
       )}
     </div>
