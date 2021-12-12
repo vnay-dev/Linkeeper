@@ -16,7 +16,6 @@ const UrlReducer = (state = initialState, action) => {
       return {
         urls: [...state.urls, action.payload],
         duplicateUrl: state.duplicateUrl,
-        // selectionActivityArray: state.selectionActivityArray,
       };
 
     case DELETE_URL:
@@ -27,16 +26,13 @@ const UrlReducer = (state = initialState, action) => {
       return {
         urls: newArray,
         duplicateUrl: state.duplicateUrl,
-        // selectionActivityArray: state.selectionActivityArray,
       };
 
     case POP_BADGES_FROM_URL:
       let finalArray;
-      //console.log(state.urls);
       let urlCard = state.urls.find((item) => {
         return item.itemId === action.payload.urlId;
       });
-      // if (urlCard) {
       let urlArrayAfterDeletion = urlCard.badges.filter((item) => {
         return item !== action.payload.badgeText;
       });
@@ -46,14 +42,10 @@ const UrlReducer = (state = initialState, action) => {
         }
         return item;
       });
-      //}
-      // else {
-      //   finalArray = state.urls;
-      // }
+
       return {
         urls: finalArray,
         duplicateUrl: state.duplicateUrl,
-        // selectionActivityArray: state.selectionActivityArray,
       };
 
     case DUPLICATE_URL_CHECK:
@@ -64,13 +56,11 @@ const UrlReducer = (state = initialState, action) => {
         return {
           urls: state.urls,
           duplicateUrl: true,
-          // selectionActivityArray: state.selectionActivityArray,
         };
       } else {
         return {
           urls: state.urls,
           duplicateUrl: false,
-          // selectionActivityArray: state.selectionActivityArray,
         };
       }
 

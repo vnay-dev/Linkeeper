@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addBadge, badgeSelected } from "../../redux/Badges/action";
+import {
+  addBadge,
+  addSelectionActivityArray,
+  badgeSelected,
+} from "../../redux/Badges/action";
 import { resetAddBadgeFromDropDown } from "../../redux/DropDown/action";
 import { showError } from "../../redux/Error/action";
 
@@ -23,6 +27,7 @@ const Dropdown = ({ listArray }) => {
       showDuplicateBadgeError();
     } else {
       dispatch(addBadge(selectedBadge));
+      dispatch(addSelectionActivityArray(selectedBadge));
       dispatch(badgeSelected(selectedBadge));
     }
     dispatch(resetAddBadgeFromDropDown());

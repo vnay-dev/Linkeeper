@@ -3,10 +3,7 @@ import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/Modal/action";
 import { closeError, showError } from "../../redux/Error/action";
-import {
-  addUrl,
-  duplicateUrlCheck,
-} from "../../redux/Urls/action";
+import { addUrl, duplicateUrlCheck } from "../../redux/Urls/action";
 
 import Chip from "@mui/material/Chip";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -187,12 +184,10 @@ const Modal = () => {
     if (!!itemFound) {
       showDuplicateBadgeError();
     } else {
-      //dispatch(addNewBadge(selectedBadge));
       dispatch(addBadge(selectedBadge));
       dispatch(addSelectionActivityArray(selectedBadge));
       dispatch(badgeSelected(selectedBadge));
-      //setArrCurrent([...arrCurrent, selectedBadge]);
-      dispatch(addSelectionActivityArray(selectedBadge));
+      dispatch(closeError());
     }
   };
 
@@ -200,12 +195,6 @@ const Modal = () => {
     if (suggestionsArr.length) {
       return suggestionsArr.map((item, index) => {
         return (
-          // <Chip
-          //   key={index}
-          //   label={item[0]}
-          //   className="suggestion-badges"
-          //   onClick={addBadgeFromRecommendation}
-          // />
           <BadgeContainer
             key={index}
             label={item[0]}
@@ -242,7 +231,7 @@ const Modal = () => {
       dispatch(badgeUnselected());
       setShowDropdown(false);
     }
-    console.log(badgeStoreArray.selectionActivityArray);
+    console.log(badgeStoreArray.badges);
   }, [badgeStoreArray]);
 
   useEffect(() => {
@@ -261,7 +250,6 @@ const Modal = () => {
   }, [urlText]);
 
   useEffect(() => {
-    //console.log(urlState.selectionActivityArray)
     if (urlState.duplicateUrl) {
       dispatch(
         dispatch(showError({ type: "error", message: "Url already exist!" }))
@@ -352,44 +340,15 @@ const Modal = () => {
             className="selected-badges"
             ref={currentBadgeList}
           >
-            {/* {badgeStoreArray.currentBadges.length ? (
-              badgeStoreArray.currentBadges.map((item, index) => {
-                let badgeText = item;
-                return (
-                  // <Chip
-                  //   key={index}
-                  //   className="new-added-badge"
-                  //   label={item}
-                  //   onDelete={() => handleDelete(badgeText)}
-                  // />
-                  <BadgeContainer
-                    key={index}
-                    label={item}
-                    status={"none"}
-                    onDelete={() => handleDelete(badgeText)}
-                    // onClick={() => addBadgeFromRecommendation(item[0])}
-                  />
-                );
-              })
-            ) : (
-              <span className="placeholder">Badges... </span>
-            )} */}
             {badgeStoreArray.selectionActivityArray.length ? (
               badgeStoreArray.selectionActivityArray.map((item, index) => {
                 let badgeText = item;
                 return (
-                  // <Chip
-                  //   key={index}
-                  //   className="new-added-badge"
-                  //   label={item}
-                  //   onDelete={() => handleDelete(badgeText)}
-                  // />
                   <BadgeContainer
                     key={index}
                     label={item}
                     status={"none"}
                     onDelete={() => handleDelete(badgeText)}
-                    // onClick={() => addBadgeFromRecommendation(item[0])}
                   />
                 );
               })

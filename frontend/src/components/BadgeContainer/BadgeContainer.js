@@ -27,7 +27,7 @@ const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
     setDeleteAction(true);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(removeBadgeFromCurrent(selectedBadge));
-    // dispatch(removeBadgeFromGlobal(selectedBadge));
+    dispatch(removeBadgeFromGlobal(selectedBadge));
     //dispatch(popBadgesFromUrl({ badgeText: selectedBadge, urlId: urlId }));
   };
 

@@ -13,7 +13,6 @@ import {
 const initialState = {
   badges: [], // global list of badges
   currentBadges: [], // current list of badges
-  //filteredCurrentBadges: [],
   selectionActivityArray: [], // display array in the badge activity
   badgeSelectedFlag: false,
 };
@@ -42,7 +41,6 @@ const BadgeReducer = (state = initialState, action) => {
       return {
         badges: [...state.badges, action.payload],
         currentBadges: state.currentBadges,
-        // filteredCurrentBadges: state.filteredCurrentBadges,
         badgeSelectedFlag: state.badgeSelectedFlag,
         selectionActivityArray: state.selectionActivityArray,
       };
@@ -50,7 +48,6 @@ const BadgeReducer = (state = initialState, action) => {
       return {
         badges: state.badges,
         currentBadges: state.currentBadges,
-        // filteredCurrentBadges: state.filteredCurrentBadges,
         badgeSelectedFlag: true,
         selectionActivityArray: state.selectionActivityArray,
       };
@@ -58,7 +55,6 @@ const BadgeReducer = (state = initialState, action) => {
       return {
         badges: state.badges,
         currentBadges: state.currentBadges,
-        // filteredCurrentBadges: state.filteredCurrentBadges,
         badgeSelectedFlag: false,
         selectionActivityArray: state.selectionActivityArray,
       };
@@ -66,7 +62,6 @@ const BadgeReducer = (state = initialState, action) => {
       return {
         badges: state.badges,
         currentBadges: [],
-        // filteredCurrentBadges: state.filteredCurrentBadges,
         badgeSelectedFlag: state.badgeSelectedFlag,
         selectionActivityArray: state.selectionActivityArray,
       };
@@ -74,35 +69,23 @@ const BadgeReducer = (state = initialState, action) => {
       let currentBadgesAfterDeletion = state.currentBadges.filter((item) => {
         return action.payload !== item;
       });
-      // let globalBadgesAfterDeletion = state.badges.filter((item) => {
-      //   return action.payload !== item;
-      // });
       return {
         badges: state.badges,
         currentBadges: currentBadgesAfterDeletion,
-        //currentBadges: state.currentBadges,
-        //filteredCurrentBadges: currentBadgesAfterDeletion,
         badgeSelectedFlag: state.badgeSelectedFlag,
         selectionActivityArray: state.selectionActivityArray,
       };
     case POP_BADGE_FROM_GLOBAL:
-      // let globalBadgesAfterDeletion = state.badges.filter((item) => {
-      //   return action.payload !== item;
-      // });
       return {
         badges: state.badges,
-        //currentBadges: currentBadgesAfterDeletion,
         currentBadges: state.currentBadges,
-        // filteredCurrentBadges: state.filteredCurrentBadges,
         badgeSelectedFlag: state.badgeSelectedFlag,
         selectionActivityArray: state.selectionActivityArray,
       };
     case RESET_SELECTION_ACTIVITY_ARRAY:
       return {
         badges: state.badges,
-        //currentBadges: currentBadgesAfterDeletion,
         currentBadges: state.currentBadges,
-        // filteredCurrentBadges: state.filteredCurrentBadges,
         badgeSelectedFlag: state.badgeSelectedFlag,
         selectionActivityArray: [],
       };
