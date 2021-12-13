@@ -5,7 +5,6 @@ import { closeModal } from "../../redux/Modal/action";
 import { closeError, showError } from "../../redux/Error/action";
 import { addUrl, duplicateUrlCheck } from "../../redux/Urls/action";
 
-import Chip from "@mui/material/Chip";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   addBadge,
@@ -199,7 +198,7 @@ const Modal = () => {
             key={index}
             label={item[0]}
             onClick={() => addBadgeFromRecommendation(item[0])}
-            status={"add"}
+            status={true}
             onDelete={() => handleDelete(item[0])}
           />
         );
@@ -231,7 +230,7 @@ const Modal = () => {
       dispatch(badgeUnselected());
       setShowDropdown(false);
     }
-    console.log(badgeStoreArray.badges);
+    //console.log(badgeStoreArray.badges);
   }, [badgeStoreArray]);
 
   useEffect(() => {
@@ -347,7 +346,7 @@ const Modal = () => {
                   <BadgeContainer
                     key={index}
                     label={item}
-                    status={"none"}
+                    status={false}
                     onDelete={() => handleDelete(badgeText)}
                   />
                 );

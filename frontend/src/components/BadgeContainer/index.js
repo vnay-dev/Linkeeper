@@ -1,4 +1,4 @@
-import BadgeContainer from "./BadgeContainer";
+import BadgeContainer from "./BadgeContainer2";
 import "./index.css";
 
 export default BadgeContainer;

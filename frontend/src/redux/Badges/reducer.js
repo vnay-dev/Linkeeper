@@ -76,8 +76,11 @@ const BadgeReducer = (state = initialState, action) => {
         selectionActivityArray: state.selectionActivityArray,
       };
     case POP_BADGE_FROM_GLOBAL:
+      let globalBadgesAfterDeletion = state.badges.filter((item) => {
+        return action.payload !== item;
+      });
       return {
-        badges: state.badges,
+        badges: globalBadgesAfterDeletion,
         currentBadges: state.currentBadges,
         badgeSelectedFlag: state.badgeSelectedFlag,
         selectionActivityArray: state.selectionActivityArray,
