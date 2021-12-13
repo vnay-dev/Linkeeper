@@ -25,7 +25,9 @@ const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
   const unSelectBadge = () => {
     onDelete();
     //setRotate(true);
-    setState3(true);
+    setState1(true);
+    setState2(false);
+    // setState3(true);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(removeBadgeFromCurrent(selectedBadge));
     dispatch(removeBadgeFromGlobal(selectedBadge));
@@ -34,86 +36,88 @@ const BadgeContainer = ({ label, onClick, status, onDelete, urlId }) => {
   const addBackBadge = () => {
     // setShowDeleteBtn(false);
     // setRotate(false);
-    setState2(false);
-    setState1(true);
+    setState2(true);
+    setState1(false);
+    setState3(true);
     //setDeleteAction(false);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(addBadge(selectedBadge));
     //setOption(true);
   };
 
-  const showClearIcon = (flag) => {
-    return flag ? (
+  // const showAddIcon = (flag) => {
+  //   return !state3 ? (
+  //     <AddCircleOutlineIcon className="add-icon" />
+  //   ) : (
+  //     <AddCircleOutlineIcon
+  //       className={state3 ? "rotateIcon add-icon" : "add-icon"}
+  //       onClick={addBackBadge}
+  //     />
+  //   );
+  // };
+
+  const showAddIcon = () => {
+    return <AddCircleOutlineIcon className="add-icon" />;
+  };
+
+  const bingo = (flag) => {
+    if (flag) {
+      setState1(false);
+      setState2(true);
+    } else {
+      setState1(true);
+      setState2(true);
+    }
+    setState3(false)
+  };
+
+  // const showClearIcon = (flag) => {
+  //   return state2 ? (
+  //     <HighlightOffIcon
+  //       className="clear-icon"
+  //       //onMouseLeave={() => setShowDeleteBtn(false)}
+  //       //onMouseLeave={() => setState2(false)}
+  //       onMouseLeave={() => bingo(true)}
+  //       onClick={unSelectBadge}
+  //     />
+  //   ) : null;
+  // };
+
+  const showClearIcon = () => {
+    return state3 ? null : state2 ? (
       <HighlightOffIcon
         className="clear-icon"
         //onMouseLeave={() => setShowDeleteBtn(false)}
-        onMouseLeave={() => setState2(false)}
+        //onMouseLeave={() => setState2(false)}
+        onMouseLeave={() => bingo(true)}
         onClick={unSelectBadge}
       />
-    ) : null;
-  };
-
-  const showAddIcon = (flag) => {
-    return flag ? (
-      <AddCircleOutlineIcon className="add-icon" />
     ) : (
-      <AddCircleOutlineIcon
-        className={rotate ? "rotateIcon add-icon" : "add-icon"}
+      <HighlightOffIcon
+        className="rotateIcon clear-icon"
+        //onMouseLeave={() => bingo(true)}
+        //onClick={unSelectBadge}
         onClick={addBackBadge}
       />
     );
   };
 
-  const showDoneIcon = (flag) => {
-    return flag ? (
+  const showDoneIcon = () => {
+    return !state1 ? (
       <CheckCircleOutlineIcon
         className="done-icon"
         //onMouseEnter={() => setShowDeleteBtn(true)}
-        onMouseEnter={() => setState2(true)}
+        //onMouseEnter={() => setState2(true)}
+        onMouseEnter={() => bingo(false)}
       />
     ) : null;
-  };
-
-  // const checker = () => {
-  //   if (status) {
-  //     return showAddIcon(true);
-  //   } else {
-  //     if (showDeleteBtn) {
-  //       if (rotate) {
-  //         return showAddIcon(false);
-  //       }
-  //       return showClearIcon(true);
-  //     } else {
-  //       return showDoneIcon(true);
-  //     }
-  //   }
-  // };
-
-  const checker = () => {
-    if (status) {
-      return showAddIcon(true);
-    } else {
-      if (!state1) {
-        if (state2) {
-          if (state3) {
-            return showAddIcon(false);
-          }
-          return showClearIcon(true);
-        }
-        return showDoneIcon(true);
-      } else {
-        if(state3){
-          return showDoneIcon(true)
-        }
-        return showDoneIcon(false);
-      }
-    }
   };
 
   return (
     <div className="badgeContainer" ref={parentContainer} onClick={onClick}>
       <span>{label}</span>
-      {checker()}
+      {status ? showAddIcon() : showDoneIcon()}
+      {state1 && showClearIcon()}
     </div>
   );
 };

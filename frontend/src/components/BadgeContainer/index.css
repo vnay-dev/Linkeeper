@@ -37,9 +37,9 @@
 
 @keyframes spin {
   from {
-    transform: rotate(30deg);
+    transform: rotate(90deg);
   }
   to {
-    transform: rotate(0deg);
+    transform: rotate(20deg);
   }
 }
