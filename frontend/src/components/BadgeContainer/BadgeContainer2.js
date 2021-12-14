@@ -10,9 +10,9 @@ import {
 } from "../../redux/Badges/action";
 
 const BadgeContainer = ({ label, onClick, status, onDelete }) => {
-  const [state1, setState1] = useState(false);
-  const [state2, setState2] = useState(false);
-  const [state3, setState3] = useState(false);
+  const [doneState, setDoneState] = useState(false);
+  const [clearState, setClearState] = useState(false);
+  const [toggleClear, setToggleClear] = useState(false);
   const [state4, setState4] = useState(false);
 
   const dispatch = useDispatch();
@@ -20,18 +20,18 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
 
   const unSelectBadge = () => {
     onDelete();
-    setState1(true);
-    setState2(false);
-    setState3(false);
+    setDoneState(true);
+    setClearState(false);
+    setToggleClear(false);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(removeBadgeFromCurrent(selectedBadge));
     dispatch(removeBadgeFromGlobal(selectedBadge));
   };
 
   const addBackBadge = () => {
-    setState1(false);
-    setState3(false);
-    setState2(true);
+    setDoneState(false);
+    setToggleClear(false);
+    setClearState(true);
     setState4(true);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(addBadge(selectedBadge));
@@ -44,18 +44,18 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
   const toggleHoverState = (flag) => {
     if (!state4) {
       if (flag) {
-        setState1(false);
+        setDoneState(false);
       } else {
-        setState1(true);
+        setDoneState(true);
       }
     }
-    setState2(true);
-    setState3(false);
+    setClearState(true);
+    setToggleClear(false);
     setState4(false);
   };
 
   const showClearIcon = () => {
-    return state3 ? null : state2 ? (
+    return toggleClear ? null : clearState ? (
       <HighlightOffIcon
         className="clear-icon"
         onMouseLeave={() => toggleHoverState(true)}
@@ -67,7 +67,7 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
   };
 
   const showDoneIcon = () => {
-    return !state1 ? (
+    return !doneState ? (
       <CheckCircleOutlineIcon
         className="done-icon"
         onMouseEnter={() => toggleHoverState(false)}
@@ -79,7 +79,7 @@ const BadgeContainer = ({ label, onClick, status, onDelete }) => {
     <div className="badgeContainer" ref={parentContainer} onClick={onClick}>
       <span>{label}</span>
       {status ? showAddIcon() : showDoneIcon()}
-      {state1 && showClearIcon()}
+      {doneState && showClearIcon()}
     </div>
   );
 };
