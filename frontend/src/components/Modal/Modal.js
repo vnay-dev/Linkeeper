@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/Modal/action";
@@ -30,6 +30,7 @@ import {
   toggleKeyUp,
 } from "../../redux/DropDown/action";
 import BadgeContainer from "../BadgeContainer";
+import debounce from "lodash.debounce";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -47,8 +48,7 @@ const Modal = () => {
   const [suggestionsArr, setSuggestionsArr] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [shortUrlTitle, setShortUrlTitle] = useState("");
-
-  const [arrCurrent, setArrCurrent] = useState([]);
+  const [isError, setError] = useState(false);
 
   const closeModalView = () => {
     dispatch(closeModal());
@@ -77,17 +77,20 @@ const Modal = () => {
 
   const validator = () => {
     if (!(urlText && badgeValidator())) {
+      setError(true);
       dispatch(
         showError({ type: "error", message: "Cannot leave fields empty!" })
       );
       return false;
     }
+    setError(false);
     return true;
   };
 
   const getData = () => {
     let flag = validator();
     if (flag) {
+      setError(false);
       dispatch(closeError());
       let id = createID();
       dispatch(
@@ -132,47 +135,50 @@ const Modal = () => {
   };
 
   const showDuplicateBadgeError = () => {
+    setError(true);
     dispatch(showError({ type: "error", message: "Badge already added!" }));
   };
 
-  const addNewBadgeAction = (newBadge) => {
-    dispatch(addNewBadge(newBadge));
-    dispatch(addBadge(newBadge));
-  };
-
   const createNewBadge = () => {
-    const newBadge = newBadgeInput.current.value;
-    // setArrCurrent([...arrCurrent, newBadge]);
-    //dispatch(addSelectionActivityArray(newBadge));
-    //addNewBadgeAction(newBadge);
-
-    // let itemFound = badgeStoreArray.currentBadges.find((item) => {
-    //   return item.match(newBadge);
-    // });
-
-    // if (!!itemFound) {
-    //   showDuplicateBadgeError();
-    // } else {
-    //   addNewBadgeAction(newBadge);
-    // }
-
     newBadgeInput.current.value = "";
   };
 
   const validateUrl = (string) => {
     if (validUrl.isUri(string)) {
+      setError(false);
       return true;
     }
+    setError(true);
     return false;
   };
 
   const setUrl = (e) => {
-    setUrlText(e.target.value);
-    if (e.target.value && validateUrl(e.target.value)) {
-      dispatch(closeError());
-      dispatch(duplicateUrlCheck(e.target.value));
+    let inputUrl = e.target.value;
+    if (inputUrl === "") {
+      setSuggestionsArr([]);
+      setImageUrl("");
+      dispatch(stopLoader());
     } else {
-      dispatch(showError({ type: "error", message: "Invalid url format" }));
+      dispatch(showLoader())
+      let finalUrl;
+      if (
+        inputUrl.indexOf("https://") === -1 &&
+        inputUrl.indexOf("http://") === -1
+      ) {
+        finalUrl = "https://" + inputUrl;
+      } else {
+        finalUrl = inputUrl;
+      }
+      setUrlText(finalUrl);
+      if (finalUrl && !isError) {
+        dispatch(closeError());
+        dispatch(duplicateUrlCheck(e.target.value));
+        optimisedFunctionCall(finalUrl);
+      } else {
+        setError(true);
+        dispatch(showError({ type: "error", message: "Invalid url format" }));
+        dispatch(stopLoader());
+      }
     }
   };
 
@@ -224,6 +230,35 @@ const Modal = () => {
     }
   };
 
+  const apiFunctionCall = (urlParam) => {
+    let isValidate = validateUrl(urlParam);
+    if (isValidate) {
+      dispatch(closeError());
+      setError(false);
+      axios
+        .post("https://linkeeper-backend.herokuapp.com/parse", {
+          url: urlParam,
+        })
+        .then((res) => {
+          setSuggestionsArr(res.data.results);
+          setImageUrl(res.data.logo);
+          setShortUrlTitle(res.data.title);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setError(true);
+      dispatch(showError({ type: "error", message: "Invalid url format" }));
+      dispatch(stopLoader());
+    }
+  };
+
+  const optimisedFunctionCall = useCallback(
+    debounce(apiFunctionCall, 1000),
+    []
+  );
+
   useEffect(() => {
     if (badgeStoreArray.badgeSelectedFlag) {
       newBadgeInput.current.value = "";
@@ -250,22 +285,11 @@ const Modal = () => {
 
   useEffect(() => {
     if (urlState.duplicateUrl) {
-      dispatch(
-        dispatch(showError({ type: "error", message: "Url already exist!" }))
-      );
+      setError(true);
+      dispatch(showError({ type: "error", message: "Url already exist!" }));
+      dispatch(stopLoader());
     } else {
-      axios
-        .post("https://linkeeper-backend.herokuapp.com/parse", {
-          url: urlText,
-        })
-        .then((res) => {
-          setSuggestionsArr(res.data.results);
-          setImageUrl(res.data.logo);
-          setShortUrlTitle(res.data.title);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      setError(false);
     }
   }, [urlState]);
 
@@ -302,7 +326,7 @@ const Modal = () => {
                   </div>
                 </div>
               ) : null}
-              {imageUrl && (
+              {imageUrl ? (
                 <div className="logo-canvas">
                   <img
                     src={imageUrl}
@@ -310,7 +334,7 @@ const Modal = () => {
                     className="imgPreview"
                   />
                 </div>
-              )}
+              ) : null}
             </div>
             <div className="badge-formControl">
               <div className="addbadge-input">
