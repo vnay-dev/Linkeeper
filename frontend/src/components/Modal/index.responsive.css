@@ -1,0 +1,30 @@
+@media only screen and (max-width: 900px) {
+  .css-0 {
+    margin: 1em auto;
+  }
+
+  .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    width: 80.5vw;
+  }
+
+  .selected-badges {
+    width: 77.8vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .css-0 {
+    width: 85%;
+    margin: 1em auto;
+  }
+
+  .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    margin: 0.3em;
+    width: 75vw;
+  }
+
+  .selected-badges {
+    margin: 0.3em 0em 0em 0.3em;
+    width: 69vw;
+  }
+}

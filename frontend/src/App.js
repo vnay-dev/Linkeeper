@@ -66,7 +66,8 @@ function App() {
         </Alert>
       )}
       <NavBar />
-      {modalState.visibility && <Modal />}
+      {/* {modalState.visibility && <Modal />} */}
+      <Modal />
       {searchResults.searchFlag ? showSearchResults() : showCurrentUrls()}
     </div>
   );

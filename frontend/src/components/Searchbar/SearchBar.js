@@ -30,13 +30,13 @@ const SearchBar = () => {
 
   return (
     <div className="searchbar-container">
-      <SearchIcon />
       <input
         onChange={(e) => triggerSearch(e.target.value)}
         className="searchbar"
         placeholder="Search…"
         type="text"
       />
+      <SearchIcon />
     </div>
   );
 };
