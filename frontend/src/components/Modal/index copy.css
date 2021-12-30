@@ -47,3 +47,19 @@
 .MuiButtonBase-root.css-zcbmsk-MuiButtonBase-root-MuiButton-root {
   align-self: flex-end;
 }
+
+.suggestion-canvas{
+  display: flex;
+  justify-content: space-around;
+}
+
+.suggestion-canvas .preview-suggestions{
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.suggestion-canvas .preview-suggestions .show-suggestions{
+  display: flex;
+  flex-direction: row;
+}

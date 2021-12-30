@@ -253,8 +253,8 @@ const Modal = () => {
       dispatch(closeError());
       setError(false);
       axios
-        //.post("https://linkeeper-backend.herokuapp.com/parse", {
-        .post("http://localhost:5000/parse", {
+        .post("https://linkeeper-backend.herokuapp.com/parse", {
+          // .post("http://localhost:5000/parse", {
           url: urlParam,
         })
         .then((res) => {
@@ -332,17 +332,17 @@ const Modal = () => {
           />
         )}
         <div className="suggestion-canvas">
+          {imageUrl ? (
+            <div className="logo-canvas">
+              <img src={imageUrl} alt="img-preview" className="imgPreview" />
+            </div>
+          ) : null}
           {suggestionsArr.length ? (
             <div className="preview-suggestions">
               <span>In short : {shortUrlTitle}</span>
               <div className="show-suggestions">
                 {suggestionsArr.length ? showRecommendation() : null}
               </div>
-            </div>
-          ) : null}
-          {imageUrl ? (
-            <div className="logo-canvas">
-              <img src={imageUrl} alt="img-preview" className="imgPreview" />
             </div>
           ) : null}
         </div>
