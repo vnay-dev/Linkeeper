@@ -423,14 +423,6 @@ const Modal = () => {
           )}
           {/* </Typography> */}
         </span>
-      </CardContent>
-      {/* <Button btnText={"Save"} onClick={getData} className={"save-badge"} /> */}
-      <CardActions
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
         <Button
           color="secondary"
           variant="contained"
@@ -439,7 +431,16 @@ const Modal = () => {
         >
           Save
         </Button>
-      </CardActions>
+      </CardContent>
+      {/* <Button btnText={"Save"} onClick={getData} className={"save-badge"} /> */}
+      {/* <CardActions
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+       
+      </CardActions> */}
     </Card>
   );
 };

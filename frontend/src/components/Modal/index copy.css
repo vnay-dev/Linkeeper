@@ -1,29 +1,38 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 @import url("https://use.fontawesome.com/releases/v5.14.0/css/all.css");
 
-.css-0 {
+/* .css-0 {
   width: 40%;
   border: 1px solid rgb(189, 188, 188);
   margin: 1em 23em;
   border-radius: 0.5em;
   padding-right: 0.5em;
   padding-bottom: 0.5em;
+}*/
+.css-46bh2p-MuiCardContent-root {
+  display: flex;
+  flex-direction: column;
+  /* background: aqua; */
 }
 
 .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-  margin: 0.3em;
-  width: 37.5vw;
+  margin: 0.3em 0;
+}
+
+.MuiCard-root.css-bhp9pd-MuiPaper-root-MuiCard-root {
+  margin: 1em 23em;
 }
 
 .selected-badges {
   border: 1px solid rgb(199, 199, 199);
   border-radius: 0.2em;
   padding: 0.6em 0.6em;
-  margin: 0.3em 0em 0em 0.3em;
+  /* margin: 0.3em 0em 0em 0.3em; */
+  margin: 0.5em 0;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  width: 35.9vw;
+  /* width: 36.3vw; */
 }
 
 .selected-badges .placeholder {
@@ -31,4 +40,10 @@
   font-family: "Roboto", sans-serif;
 }
 
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  width: 100%;
+}
 
+.MuiButtonBase-root.css-zcbmsk-MuiButtonBase-root-MuiButton-root {
+  align-self: flex-end;
+}

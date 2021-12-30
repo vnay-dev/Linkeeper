@@ -52,14 +52,14 @@ const NavBar = () => {
     },
     marginLeft: 0,
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(15),
-      width: "auto",
-    },
-    [theme.breakpoints.up("md")]: {
-      marginLeft: theme.spacing(45),
-      width: "auto",
-    },
+    // [theme.breakpoints.up("sm")]: {
+    //   marginLeft: theme.spacing(15),
+    //   width: "auto",
+    // },
+    // [theme.breakpoints.up("md")]: {
+    //   //marginLeft: theme.spacing(45),
+    //   //width: "auto",
+    // },
   }));
   const dispatch = useDispatch();
 
