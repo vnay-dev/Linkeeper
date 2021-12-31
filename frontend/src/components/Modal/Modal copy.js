@@ -45,6 +45,7 @@ import {
   Button,
   Container,
   Grid,
+  Avatar,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -331,7 +332,13 @@ const Modal = () => {
             className="loader"
           />
         )}
-        <div className="suggestion-canvas">
+        <div
+          className={`suggestion-canvas ${
+            imageUrl && shortUrlTitle && suggestionsArr.length
+              ? "suggestion-canvas-addMargin"
+              : ""
+          }`}
+        >
           {imageUrl ? (
             <div className="logo-canvas">
               <img src={imageUrl} alt="img-preview" className="imgPreview" />
@@ -339,7 +346,7 @@ const Modal = () => {
           ) : null}
           {suggestionsArr.length ? (
             <div className="preview-suggestions">
-              <span>In short : {shortUrlTitle}</span>
+              <span className="summary">In short : {shortUrlTitle}</span>
               <div className="show-suggestions">
                 {suggestionsArr.length ? showRecommendation() : null}
               </div>
