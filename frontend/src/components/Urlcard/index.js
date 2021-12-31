@@ -1,4 +1,4 @@
-import UrlCard from "./UrlCard copy";
+import UrlCard from "./UrlCard";
 import "./index.css";
 
 export default UrlCard;

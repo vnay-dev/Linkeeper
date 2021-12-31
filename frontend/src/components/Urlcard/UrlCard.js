@@ -40,7 +40,7 @@ const UrlCard = ({ url, badges, urlId, title }) => {
   return (
     <div className="urlCard">
       <a href={url} target="_blank" rel="noreferrer">
-        <span>{title}</span>
+        <span className="urlCard-title">{title}</span>
       </a>
       <div className="url-badges">
         {badges.length

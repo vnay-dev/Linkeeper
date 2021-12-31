@@ -67,6 +67,11 @@ const Modal = () => {
   const [shortUrlTitle, setShortUrlTitle] = useState("");
   const [isError, setError] = useState(false);
 
+  const newBadgeInput = useRef();
+  const currentBadgeList = useRef();
+  const urlInputText = useRef();
+  const suggestionCanvas = useRef();
+
   const closeModalView = () => {
     dispatch(closeModal());
     dispatch(clearCurrentBadgeList());
@@ -104,6 +109,12 @@ const Modal = () => {
     return true;
   };
 
+  const clearFormData = () => {
+    urlInputText.current.children[0].children[0].value = "";
+    suggestionCanvas.current.innerHTML = ""
+    suggestionCanvas.current.className = "suggestion-canvas"
+  };
+
   const getData = () => {
     let flag = validator();
     if (flag) {
@@ -121,6 +132,7 @@ const Modal = () => {
       dispatch(closeModal()); // do this once the data addition is success
       dispatch(clearCurrentBadgeList());
       dispatch(resetSelectionActivityArray());
+      clearFormData();
     }
   };
 
@@ -128,11 +140,7 @@ const Modal = () => {
     dispatch(removeBadgeFromCurrent(item));
   };
 
-  const newBadgeInput = useRef();
-  const currentBadgeList = useRef();
-
   const searchBadge = (value) => {
-    console.log(value);
     if (value) {
       dispatch(closeError());
       const availableBadges = badgeStoreArray.badges.filter((item) => {
@@ -316,6 +324,7 @@ const Modal = () => {
     <Card>
       <CardContent>
         <TextField
+          ref={urlInputText}
           onChange={(e) => setUrl(e)}
           placeholder="Paste url..."
           variant="outlined"
@@ -338,6 +347,7 @@ const Modal = () => {
               ? "suggestion-canvas-addMargin"
               : ""
           }`}
+          ref={suggestionCanvas}
         >
           {imageUrl ? (
             <div className="logo-canvas">
