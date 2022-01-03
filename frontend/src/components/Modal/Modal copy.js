@@ -48,6 +48,8 @@ import {
   Avatar,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import SuggestionBadge from "../BadgeContainer/SuggestionBadges";
+import SelectedBadge from "../BadgeContainer/SelectedBadges";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -226,12 +228,17 @@ const Modal = () => {
     if (suggestionsArr.length) {
       return suggestionsArr.map((item, index) => {
         return (
-          <BadgeContainer
-            key={index}
+          // <BadgeContainer
+          //   key={index}
+          //   label={item[0]}
+          //   onClick={() => addBadgeFromRecommendation(item[0])}
+          //   status={true}
+          //   onDelete={() => handleDelete(item[0])}
+          // />
+          <SuggestionBadge
             label={item[0]}
+            key={index}
             onClick={() => addBadgeFromRecommendation(item[0])}
-            status={true}
-            onDelete={() => handleDelete(item[0])}
           />
         );
       });
@@ -285,6 +292,33 @@ const Modal = () => {
     debounce(apiFunctionCall, 1000),
     []
   );
+
+  const { width } = useWindowDimensions();
+
+  function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    );
+
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return windowDimensions;
+  }
+
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height,
+    };
+  }
 
   useEffect(() => {
     if (badgeStoreArray.badgeSelectedFlag) {
@@ -417,12 +451,39 @@ const Modal = () => {
             badgeStoreArray.selectionActivityArray.map((item, index) => {
               let badgeText = item;
               return (
-                <BadgeContainer
-                  key={index}
-                  label={item}
-                  status={false}
-                  onDelete={() => handleDelete(badgeText)}
-                />
+                // <BadgeContainer
+                //   key={index}
+                //   label={item}
+                //   status={false}
+                //   onDelete={() => handleDelete(badgeText)}
+                //   onClick={() => addBadgeFromRecommendation(badgeText)}
+                //   setDoneIconState={setDoneIconState}
+                //   setClearIconState={setClearIconState}
+                //   setAddIconState={setAddIconState}
+                // />
+                width < 1280 ? (
+                  <SelectedBadge
+                    key={index}
+                    label={item}
+                    onClick={() => addBadgeFromRecommendation(badgeText)}
+                    onDelete={() => handleDelete(badgeText)}
+                    status={true}
+                    // doneState={doneIconState}
+                    // clearState={clearIconState}
+                    // addState={addIconState}
+                  />
+                ) : (
+                  <SelectedBadge
+                    key={index}
+                    label={item}
+                    //onClick={() => addBadgeFromRecommendation(badgeText)}
+                    onDelete={() => handleDelete(badgeText)}
+                    status={false}
+                    // doneState={doneIconState}
+                    // clearState={clearIconState}
+                    // addState={addIconState}
+                  />
+                )
               );
             })
           ) : (
