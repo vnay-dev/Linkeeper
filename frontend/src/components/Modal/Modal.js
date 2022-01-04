@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../redux/Modal/action";
 import { closeError, showError } from "../../redux/Error/action";
 import { addUrl, duplicateUrlCheck } from "../../redux/Urls/action";
 
@@ -51,7 +50,6 @@ const Modal = () => {
   const [isError, setError] = useState(false);
 
   const closeModalView = () => {
-    dispatch(closeModal());
     dispatch(clearCurrentBadgeList());
     dispatch(closeError());
   };
@@ -101,7 +99,7 @@ const Modal = () => {
           title: shortUrlTitle,
         })
       );
-      dispatch(closeModal()); // do this once the data addition is success
+
       dispatch(clearCurrentBadgeList());
       dispatch(resetSelectionActivityArray());
     }
@@ -159,7 +157,7 @@ const Modal = () => {
       setImageUrl("");
       dispatch(stopLoader());
     } else {
-      dispatch(showLoader())
+      dispatch(showLoader());
       let finalUrl;
       if (
         inputUrl.indexOf("https://") === -1 &&

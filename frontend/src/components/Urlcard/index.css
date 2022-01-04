@@ -10,6 +10,11 @@
   margin: 1em auto;
 }
 
+.urlCard:hover {
+  background: rgb(139, 139, 139);
+  transition: ease-in 0.05s;
+}
+
 .urlCard .css-1k430x0-MuiButtonBase-root-MuiChip-root {
   background: white;
 }
@@ -36,8 +41,9 @@
   opacity: 0;
 }
 .delete-bin-icon:hover {
+  cursor: pointer;
   opacity: 1;
-  transition: 0.3s;
+  transition: 0.1s;
 }
 
 .urlCard a {

@@ -1,5 +1,6 @@
 import {
   ADD_BADGE,
+  ADD_BADGE_TO_CURRENT_ARRAY,
   ADD_NEW_BADGE,
   ADD_SELECTION_ACTIVITY_ARRAY,
   BADGE_SELECTED,
@@ -20,6 +21,13 @@ export const addBadge = (data) => {
 export const addNewBadge = (data) => {
   return {
     type: ADD_NEW_BADGE,
+    payload: data,
+  };
+};
+
+export const addBadgeToCurrent = (data) => {
+  return {
+    type: ADD_BADGE_TO_CURRENT_ARRAY,
     payload: data,
   };
 };

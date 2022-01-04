@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Button";
 import SearchBar from "../Searchbar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { btnOnClick } from "../../redux/Button/action";
 
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { stopSearch, triggerSearchAction } from "../../redux/SearchBar/action";
 
 const NavBar = () => {
   const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -67,6 +68,28 @@ const NavBar = () => {
     dispatch(btnOnClick());
   };
 
+  const [queryBadge, setQueryBadge] = useState("");
+  const urlArray = useSelector((state) => state.UrlReducer);
+
+  useEffect(() => {
+    if (queryBadge) {
+      dispatch(
+        triggerSearchAction({
+          queryText: queryBadge,
+          badgeArrayList: urlArray,
+        })
+      );
+    }
+  }, [queryBadge]);
+
+  const triggerSearch = (value) => {
+    if (value !== "") {
+      setQueryBadge(value);
+    } else {
+      dispatch(stopSearch());
+    }
+  };
+
   return (
     // <div className="navbar">
     //   <AppBar position="static">
@@ -87,6 +110,7 @@ const NavBar = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => triggerSearch(e.target.value)}
             />
           </Search>
         </Toolbar>

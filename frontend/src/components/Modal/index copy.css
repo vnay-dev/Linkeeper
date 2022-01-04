@@ -80,3 +80,26 @@
 .badgeContainer {
   margin: 0.25em;
 }
+
+.MuiTextField-root.url-input-field.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  margin-bottom: 0.25em;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root:hover {
+  fill: rgb(177, 171, 171);
+  cursor: pointer;
+  transition: 0.1s all ease;
+}
+
+.badge-formControl .add-newBadge {
+  background: rgb(145, 5, 163);
+  border-radius: 0.2em;
+  color: #fff;
+}
+
+.badge-formControl .add-newBadge:hover {
+  background: rgb(109, 4, 122);
+  transition: all 0.1s ease;
+  color: #fff;
+  cursor: pointer;
+}
