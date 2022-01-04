@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import UrlCard from "./components/Urlcard";
 import Alert from "@mui/material/Alert";
+import { StylesProvider } from "@material-ui/core/styles";
 
 function App() {
   const btnState = useSelector((state) => state.BtnReducer);
