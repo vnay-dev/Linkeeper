@@ -113,7 +113,8 @@ const Modal = () => {
 
   const clearFormData = () => {
     urlInputText.current.children[0].children[0].value = "";
-    suggestionCanvas.current.innerHTML = "";
+    setImageUrl("");
+    setSuggestionsArr([]);
     suggestionCanvas.current.className = "suggestion-canvas";
   };
 
