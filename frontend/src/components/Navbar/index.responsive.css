@@ -1,31 +1,11 @@
 @media only screen and (max-width: 900px) {
-  html
-    body
-    div#root
-    div
-    div.MuiBox-root.css-i9gxme
-    header.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionStatic.css-hip9hq-MuiPaper-root-MuiAppBar-root
-    div.MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.css-1t29gy6-MuiToolbar-root
-    div.css-b5xzmq {
-    width: 100%;
-  }
-  .css-1t29gy6-MuiToolbar-root {
+  .toolbar {
     margin: 0em 6.5em;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  /* html
-    body
-    div#root
-    div
-    div.MuiBox-root.css-i9gxme
-    header.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation4.MuiAppBar-root.MuiAppBar-colorPrimary.MuiAppBar-positionStatic.css-hip9hq-MuiPaper-root-MuiAppBar-root
-    div.MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.css-1t29gy6-MuiToolbar-root
-    div.css-b5xzmq {
-    background: aqua; *
-  } */
-  .css-1t29gy6-MuiToolbar-root {
+  .toolbar {
     margin: 0em;
   }
 }

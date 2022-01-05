@@ -59,8 +59,10 @@ function App() {
         </Alert>
       )}
       <NavBar />
-      <Modal />
-      {searchResults.searchFlag ? showSearchResults() : showCurrentUrls()}
+      <div className="container">
+        <Modal />
+        {searchResults.searchFlag ? showSearchResults() : showCurrentUrls()}
+      </div>
     </div>
   );
 }

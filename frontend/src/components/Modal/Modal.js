@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
 import { closeError, showError } from "../../redux/Error/action";
 import { addUrl, duplicateUrlCheck } from "../../redux/Urls/action";
-
-import ClearIcon from "@mui/icons-material/Clear";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   addBadge,
+  addBadgeToCurrent,
   addNewBadge,
   addSelectionActivityArray,
   badgeSelected,
@@ -28,17 +27,19 @@ import {
   toggleKeyDown,
   toggleKeyUp,
 } from "../../redux/DropDown/action";
-import BadgeContainer from "../BadgeContainer";
 import debounce from "lodash.debounce";
+import { Card, CardContent, TextField, Button } from "@mui/material";
+import SuggestionBadge from "../BadgeContainer/SuggestionBadges";
+import SelectedBadge from "../BadgeContainer/SelectedBadges";
 
 const Modal = () => {
   const dispatch = useDispatch();
 
-  const modalState = useSelector((state) => state.ModalReducer);
   const badgeStoreArray = useSelector((state) => state.BadgeReducer);
   const loaderState = useSelector((state) => state.LoaderReducer);
   const dropDrownToggle = useSelector((state) => state.DropDownReducer);
   const urlState = useSelector((state) => state.UrlReducer);
+  const errorState = useSelector((state) => state.ErrorReducer);
 
   const [urlText, setUrlText] = useState("");
   const [dropDownArray, setDropDownArray] = useState([]);
@@ -47,12 +48,18 @@ const Modal = () => {
   const [suggestionsArr, setSuggestionsArr] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [shortUrlTitle, setShortUrlTitle] = useState("");
-  const [isError, setError] = useState(false);
+  //const [isError, setError] = useState(false);
 
-  const closeModalView = () => {
-    dispatch(clearCurrentBadgeList());
-    dispatch(closeError());
-  };
+  const [validUrlErr, setValidUrlErr] = useState(false);
+  const [inputFieldErr, setInputFieldErr] = useState(false);
+  const [duplicateBadgeErr, setDuplicateBadgeErr] = useState(false);
+
+  const [urlClearButton, setUrlClearButton] = useState(false);
+
+  const newBadgeInput = useRef();
+  const currentBadgeList = useRef();
+  const urlInputText = useRef();
+  const suggestionCanvas = useRef();
 
   const createID = () => {
     var milliSec = new Date().getTime();
@@ -75,20 +82,33 @@ const Modal = () => {
 
   const validator = () => {
     if (!(urlText && badgeValidator())) {
-      setError(true);
+      //setError(true);
+      setInputFieldErr(true);
       dispatch(
         showError({ type: "error", message: "Cannot leave fields empty!" })
       );
       return false;
     }
-    setError(false);
+    console.log("helo1");
+    //setError(false);
+    setInputFieldErr(false);
     return true;
   };
 
-  const getData = () => {
+  const clearFormData = () => {
+    urlInputText.current.children[0].children[0].value = "";
+    setImageUrl("");
+    setSuggestionsArr([]);
+    suggestionCanvas.current.className = "suggestion-canvas";
+  };
+
+  const storeData = () => {
     let flag = validator();
     if (flag) {
-      setError(false);
+      setUrlClearButton(false);
+      console.log("helo2");
+      // setError(false);
+      //setSubmitDataErr(false);
       dispatch(closeError());
       let id = createID();
       dispatch(
@@ -102,15 +122,16 @@ const Modal = () => {
 
       dispatch(clearCurrentBadgeList());
       dispatch(resetSelectionActivityArray());
+      clearFormData();
+    } else {
+      // setError(true)
+      //setSubmitDataErr(true);
     }
   };
 
   const handleDelete = (item) => {
     dispatch(removeBadgeFromCurrent(item));
   };
-
-  const newBadgeInput = useRef();
-  const currentBadgeList = useRef();
 
   const searchBadge = (value) => {
     if (value) {
@@ -133,20 +154,29 @@ const Modal = () => {
   };
 
   const showDuplicateBadgeError = () => {
-    setError(true);
+    //setError(true);
+    setDuplicateBadgeErr(true);
     dispatch(showError({ type: "error", message: "Badge already added!" }));
   };
 
   const createNewBadge = () => {
-    newBadgeInput.current.value = "";
+    let customBadge = newBadgeInput.current.children[0].children[0].value;
+    dispatch(addSelectionActivityArray(customBadge));
+    dispatch(addBadgeToCurrent(customBadge));
+    dispatch(addBadge(customBadge));
+    dispatch(addBadgeFromDropDown());
+    newBadgeInput.current.children[0].children[0].value = "";
   };
 
   const validateUrl = (string) => {
     if (validUrl.isUri(string)) {
-      setError(false);
+      console.log("helo3");
+      //setError(false);
+      setValidUrlErr(false);
       return true;
     }
-    setError(true);
+    //setError(true);
+    setValidUrlErr(true);
     return false;
   };
 
@@ -157,6 +187,7 @@ const Modal = () => {
       setImageUrl("");
       dispatch(stopLoader());
     } else {
+      setUrlClearButton(true);
       dispatch(showLoader());
       let finalUrl;
       if (
@@ -168,12 +199,14 @@ const Modal = () => {
         finalUrl = inputUrl;
       }
       setUrlText(finalUrl);
+      let isError = validUrlErr && inputFieldErr && duplicateBadgeErr;
       if (finalUrl && !isError) {
         dispatch(closeError());
         dispatch(duplicateUrlCheck(e.target.value));
         optimisedFunctionCall(finalUrl);
       } else {
-        setError(true);
+        //setError(true);
+        setValidUrlErr(true);
         dispatch(showError({ type: "error", message: "Invalid url format" }));
         dispatch(stopLoader());
       }
@@ -188,6 +221,7 @@ const Modal = () => {
       showDuplicateBadgeError();
     } else {
       dispatch(addBadge(selectedBadge));
+      dispatch(addBadgeToCurrent(selectedBadge));
       dispatch(addSelectionActivityArray(selectedBadge));
       dispatch(badgeSelected(selectedBadge));
       dispatch(closeError());
@@ -198,12 +232,10 @@ const Modal = () => {
     if (suggestionsArr.length) {
       return suggestionsArr.map((item, index) => {
         return (
-          <BadgeContainer
-            key={index}
+          <SuggestionBadge
             label={item[0]}
+            key={index}
             onClick={() => addBadgeFromRecommendation(item[0])}
-            status={true}
-            onDelete={() => handleDelete(item[0])}
           />
         );
       });
@@ -225,16 +257,25 @@ const Modal = () => {
       }
     } else if (e.keyCode === 13) {
       dispatch(addBadgeFromDropDown());
+      if (errorState.visibility) {
+        dispatch(closeError());
+      }
+      //newBadgeInput.current.children[0].children[0].value = ""
+      //setShowDropdown(false)
     }
   };
 
   const apiFunctionCall = (urlParam) => {
     let isValidate = validateUrl(urlParam);
-    if (isValidate) {
-      dispatch(closeError());
-      setError(false);
+    let isError = validUrlErr && inputFieldErr && duplicateBadgeErr;
+    if (isValidate && !isError) {
+      // dispatch(closeError());
+      // setError(false);
+      // if (!isError) {
+      console.log("ehlo");
       axios
         .post("https://linkeeper-backend.herokuapp.com/parse", {
+          // .post("http://localhost:5000/parse", {
           url: urlParam,
         })
         .then((res) => {
@@ -245,8 +286,10 @@ const Modal = () => {
         .catch((err) => {
           console.log(err);
         });
+      //}
     } else {
-      setError(true);
+      //setError(true);
+      setValidUrlErr(true);
       dispatch(showError({ type: "error", message: "Invalid url format" }));
       dispatch(stopLoader());
     }
@@ -257,13 +300,44 @@ const Modal = () => {
     []
   );
 
+  const { width } = useWindowDimensions();
+
+  function useWindowDimensions() {
+    const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    );
+
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
+
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return windowDimensions;
+  }
+
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height,
+    };
+  }
+
+  const clearUrlInput = () => {
+    urlInputText.current.children[0].children[0].value = "";
+    dispatch(stopLoader());
+  };
+
   useEffect(() => {
-    if (badgeStoreArray.badgeSelectedFlag) {
-      newBadgeInput.current.value = "";
+    if (dropDownArray.length && showDropdown) {
+      newBadgeInput.current.children[0].children[0].value = "";
       dispatch(badgeUnselected());
       setShowDropdown(false);
     }
-    //console.log(badgeStoreArray.badges);
   }, [badgeStoreArray]);
 
   useEffect(() => {
@@ -283,104 +357,171 @@ const Modal = () => {
 
   useEffect(() => {
     if (urlState.duplicateUrl) {
-      setError(true);
+      //setError(true);
+      setDuplicateBadgeErr(true);
       dispatch(showError({ type: "error", message: "Url already exist!" }));
       dispatch(stopLoader());
     } else {
-      setError(false);
+      console.log("helo5");
+      //setError(false);
+      setDuplicateBadgeErr(false);
     }
   }, [urlState]);
 
   return (
-    <>
-      {modalState.visibility && (
-        <div className="modal">
-          <ClearIcon
-            sx={{ fontSize: 30 }}
-            className="close-modal-button"
-            onClick={closeModalView}
-          />
-          <div className="user-input">
-            <input
-              placeholder="Paste url..."
-              onChange={(e) => setUrl(e)}
-              className="url-input"
-            />
-            {loaderState.visibility && (
-              <ReactLoading
-                type={"bubbles"}
-                color="rgb(155, 155, 155)"
-                height={"2%"}
-                width={"5%"}
-                className="loader"
+    <Card className="card-wrapper">
+      <CardContent className="card-wrapper-body">
+        <TextField
+          ref={urlInputText}
+          onChange={(e) => setUrl(e)}
+          placeholder="Paste url..."
+          variant="outlined"
+          size="small"
+          className="url-input-field"
+          InputProps={{
+            endAdornment: urlClearButton ? (
+              <CloseIcon
+                style={{ color: "rgb(177, 171, 171)" }}
+                onClick={() => clearUrlInput()}
               />
-            )}
-            <div className="suggestion-canvas">
-              {suggestionsArr.length ? (
-                <div className="preview-suggestions">
-                  <span>In short : {shortUrlTitle}</span>
-                  <div className="show-suggestions">
-                    {suggestionsArr.length ? showRecommendation() : null}
-                  </div>
-                </div>
-              ) : null}
-              {imageUrl ? (
-                <div className="logo-canvas">
-                  <img
-                    src={imageUrl}
-                    alt="img-preview"
-                    className="imgPreview"
-                  />
-                </div>
-              ) : null}
+            ) : null,
+          }}
+        />
+        {loaderState.visibility && (
+          <ReactLoading
+            type={"bubbles"}
+            color="rgb(155, 155, 155)"
+            height={"2%"}
+            width={"5%"}
+            className="loader"
+          />
+        )}
+        <div
+          className={`suggestion-canvas ${
+            imageUrl && shortUrlTitle && suggestionsArr.length
+              ? "suggestion-canvas-addMargin"
+              : ""
+          }`}
+          ref={suggestionCanvas}
+        >
+          {imageUrl ? (
+            <div className="logo-canvas">
+              <img src={imageUrl} alt="img-preview" className="imgPreview" />
             </div>
-            <div className="badge-formControl">
-              <div className="addbadge-input">
-                <input
-                  onKeyDown={(e) => toggleDropdownSelect(e)}
-                  ref={newBadgeInput}
-                  className="newBadgeInput"
-                  onChange={(e) => searchBadge(e.target.value)}
-                  placeholder="Add badge..."
-                />
-                {showNewBadgeAddBtn ? (
-                  <AddIcon
-                    fontSize={"large"}
-                    className="add-newBadge"
-                    onClick={createNewBadge}
-                  />
-                ) : null}
+          ) : null}
+          {suggestionsArr.length ? (
+            <div className="preview-suggestions">
+              <span className="summary">In short : {shortUrlTitle}</span>
+              <div className="show-suggestions">
+                {suggestionsArr.length ? showRecommendation() : null}
               </div>
-              {dropDownArray.length && showDropdown ? (
-                <Dropdown listArray={dropDownArray} />
-              ) : null}
             </div>
-          </div>
-          <span
-            placeholder="Badges..."
-            className="selected-badges"
-            ref={currentBadgeList}
-          >
-            {badgeStoreArray.selectionActivityArray.length ? (
-              badgeStoreArray.selectionActivityArray.map((item, index) => {
-                let badgeText = item;
-                return (
-                  <BadgeContainer
+          ) : null}
+        </div>
+        <div className="badge-formControl">
+          {/* <div className="addbadge-input"> */}
+          {/* <input
+              onKeyDown={(e) => toggleDropdownSelect(e)}
+              ref={newBadgeInput}
+              className="newBadgeInput"
+              onChange={(e) => searchBadge(e.target.value)}
+              placeholder="Add badge..."
+            /> */}
+          <TextField
+            onKeyDown={(e) => toggleDropdownSelect(e)}
+            ref={newBadgeInput}
+            className="newBadgeInput"
+            onChange={(e) => searchBadge(e.target.value)}
+            placeholder="Add badge..."
+            variant="outlined"
+            size="small"
+            InputProps={{
+              endAdornment: showNewBadgeAddBtn ? (
+                <AddIcon
+                  fontSize={"small"}
+                  className="add-newBadge"
+                  onClick={createNewBadge}
+                />
+              ) : null,
+            }}
+          />
+          {/* </div> */}
+          {dropDownArray.length && showDropdown ? (
+            <Dropdown listArray={dropDownArray} />
+          ) : null}
+        </div>
+        <span
+          placeholder="Badges..."
+          className="selected-badges"
+          ref={currentBadgeList}
+        >
+          {/* <Typography
+          component={"span"}
+          className="selected-badges"
+          //sx={{ width: "36vw", marginTop: "0.5em" }}
+          ref={currentBadgeList}
+        > */}
+          {/* <TextField
+          placeholder="Badges..."
+          variant="outlined"
+          size="small"
+          sx={{ width: "36vw", marginTop: "0.5em" }}
+          //className="selected-badges"
+          ref={currentBadgeList}
+        /> */}
+          {badgeStoreArray.selectionActivityArray.length ? (
+            badgeStoreArray.selectionActivityArray.map((item, index) => {
+              let badgeText = item;
+              return (
+                // <BadgeContainer
+                //   key={index}
+                //   label={item}
+                //   status={false}
+                //   onDelete={() => handleDelete(badgeText)}
+                //   onClick={() => addBadgeFromRecommendation(badgeText)}
+                //   setDoneIconState={setDoneIconState}
+                //   setClearIconState={setClearIconState}
+                //   setAddIconState={setAddIconState}
+                // />
+                width < 1280 ? (
+                  <SelectedBadge
                     key={index}
                     label={item}
-                    status={false}
+                    onClick={() => addBadgeFromRecommendation(badgeText)}
                     onDelete={() => handleDelete(badgeText)}
+                    status={true}
+                    // doneState={doneIconState}
+                    // clearState={clearIconState}
+                    // addState={addIconState}
                   />
-                );
-              })
-            ) : (
-              <span className="placeholder">Badges... </span>
-            )}
-          </span>
-          <Button btnText={"Save"} onClick={getData} className={"save-badge"} />
-        </div>
-      )}
-    </>
+                ) : (
+                  <SelectedBadge
+                    key={index}
+                    label={item}
+                    //onClick={() => addBadgeFromRecommendation(badgeText)}
+                    onDelete={() => handleDelete(badgeText)}
+                    status={false}
+                    // doneState={doneIconState}
+                    // clearState={clearIconState}
+                    // addState={addIconState}
+                  />
+                )
+              );
+            })
+          ) : (
+            <span className="placeholder">Badges... </span>
+          )}
+        </span>
+        <Button
+          color="secondary"
+          variant="contained"
+          onClick={storeData}
+          className="submit-form-btn"
+        >
+          Save
+        </Button>
+      </CardContent>
+    </Card>
   );
 };
 

@@ -3,10 +3,27 @@
   padding: 0;
 }
 
-body{
+body {
   background: rgb(238, 238, 238);
 }
 
-.url-list{
+.url-list {
   flex-direction: column;
+}
+
+.container {
+  padding: 1em 23em;
+}
+
+@media only screen and (max-width: 811px) {
+  .container {
+    padding: 1em 8em;
+  }
+}
+
+
+@media only screen and (max-width: 428px) {
+  .container {
+    padding: 1em;
+  }
 }

@@ -1,58 +1,4 @@
-@media only screen and (max-width: 900px) {
-  /* .css-0 {
-    margin: 1em auto;
-  } */
-
-  /* .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-    max-width: 100%;
-  } */
-
-  /* .selected-badges {
-    width: 77.8vw;
-  } */
-
-  .MuiCard-root.css-bhp9pd-MuiPaper-root-MuiCard-root {
-    margin: 1em 8em;
-  }
-}
-
 @media only screen and (max-width: 768px) {
-  /* .css-0 {
-    width: 85%;
-    margin: 1em auto;
-  }
-
-  .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-    margin: 0.3em;
-    width: 75vw;
-  }
-
-  .selected-badges {
-    margin: 0.3em 0em 0em 0.3em;
-    width: 77vw;
-  }
-
-  .MuiCard-root.css-bhp9pd-MuiPaper-root-MuiCard-root {
-    margin: 1em;
-  }*/
-
-  /* .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
-    width: 80vw;
-  } */
-
-  /* .suggestion-canvas{
-    width: 10vw;
-  }
-
-  .preview-suggestions .summary{
-    font-size: 0.9rem;
-    word-break: break-all;
-  } */
-
-  /* .suggestion-canvas .imgPreview {
-    height: 1.2vh;
-    width: auto;
-  } */
   .suggestion-canvas {
     flex-direction: column;
   }
@@ -68,9 +14,5 @@
 
   .suggestion-canvas .show-suggestions {
     justify-content: center;
-  }
-
-  .MuiCard-root.css-bhp9pd-MuiPaper-root-MuiCard-root {
-    margin: 1em;
   }
 }
