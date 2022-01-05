@@ -1,7 +1,7 @@
-.MuiAppBar-positionStatic.css-hip9hq-MuiPaper-root-MuiAppBar-root {
-  background: black;
+.navbar {
+  background: black !important;
 }
 
-.css-1t29gy6-MuiToolbar-root {
+.toolbar {
   margin: 0em 21.5em;
 }

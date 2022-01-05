@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Button from "../Button";
-import SearchBar from "../Searchbar";
 import { useDispatch, useSelector } from "react-redux";
 import { btnOnClick } from "../../redux/Button/action";
 
@@ -111,8 +109,8 @@ const NavBar = () => {
     // </div>
 
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="static" className="navbar">
+        <Toolbar className="toolbar">
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
