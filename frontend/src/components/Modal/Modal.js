@@ -52,7 +52,7 @@ const Modal = () => {
 
   const [validUrlErr, setValidUrlErr] = useState(false);
   const [inputFieldErr, setInputFieldErr] = useState(false);
-  const [duplicateBadgeErr, setDuplicateBadgeErr] = useState(false);
+  const [duplicateUrlErr, setDuplicateUrlErr] = useState(false);
 
   const [urlClearButton, setUrlClearButton] = useState(false);
 
@@ -84,12 +84,11 @@ const Modal = () => {
     if (!(urlText && badgeValidator())) {
       //setError(true);
       setInputFieldErr(true);
-      dispatch(
-        showError({ type: "error", message: "Cannot leave fields empty!" })
-      );
+      // dispatch(
+      //   showError({ type: "error", message: "Cannot leave fields empty!" })
+      // );
       return false;
     }
-    console.log("helo1");
     //setError(false);
     setInputFieldErr(false);
     return true;
@@ -103,10 +102,10 @@ const Modal = () => {
   };
 
   const storeData = () => {
-    let flag = validator();
+    let flag =
+      validator() && !validUrlErr && !inputFieldErr && !duplicateUrlErr;
     if (flag) {
       setUrlClearButton(false);
-      console.log("helo2");
       // setError(false);
       //setSubmitDataErr(false);
       dispatch(closeError());
@@ -119,13 +118,9 @@ const Modal = () => {
           title: shortUrlTitle,
         })
       );
-
       dispatch(clearCurrentBadgeList());
       dispatch(resetSelectionActivityArray());
       clearFormData();
-    } else {
-      // setError(true)
-      //setSubmitDataErr(true);
     }
   };
 
@@ -155,7 +150,7 @@ const Modal = () => {
 
   const showDuplicateBadgeError = () => {
     //setError(true);
-    setDuplicateBadgeErr(true);
+    //setDuplicateBadgeErr(true);
     dispatch(showError({ type: "error", message: "Badge already added!" }));
   };
 
@@ -170,7 +165,6 @@ const Modal = () => {
 
   const validateUrl = (string) => {
     if (validUrl.isUri(string)) {
-      console.log("helo3");
       //setError(false);
       setValidUrlErr(false);
       return true;
@@ -189,25 +183,32 @@ const Modal = () => {
     } else {
       setUrlClearButton(true);
       dispatch(showLoader());
-      let finalUrl;
-      if (
-        inputUrl.indexOf("https://") === -1 &&
-        inputUrl.indexOf("http://") === -1
-      ) {
-        finalUrl = "https://" + inputUrl;
-      } else {
-        finalUrl = inputUrl;
-      }
-      setUrlText(finalUrl);
-      let isError = validUrlErr && inputFieldErr && duplicateBadgeErr;
-      if (finalUrl && !isError) {
-        dispatch(closeError());
-        dispatch(duplicateUrlCheck(e.target.value));
-        optimisedFunctionCall(finalUrl);
+      let isValidate = validateUrl(inputUrl);
+      if (isValidate) {
+        let finalUrl;
+        if (
+          inputUrl.indexOf("https://") === -1 &&
+          inputUrl.indexOf("http://") === -1
+        ) {
+          finalUrl = "https://" + inputUrl;
+        } else {
+          finalUrl = inputUrl;
+        }
+        setUrlText(finalUrl);
+        if (finalUrl && isValidate) {
+          dispatch(closeError());
+          dispatch(duplicateUrlCheck(e.target.value));
+          optimisedFunctionCall(finalUrl);
+        } else {
+          //setError(true);
+          setValidUrlErr(true);
+          //dispatch(showError({ type: "error", message: "Invalid url format" }));
+          dispatch(stopLoader());
+        }
       } else {
         //setError(true);
         setValidUrlErr(true);
-        dispatch(showError({ type: "error", message: "Invalid url format" }));
+        //dispatch(showError({ type: "error", message: "Invalid url format" }));
         dispatch(stopLoader());
       }
     }
@@ -264,33 +265,19 @@ const Modal = () => {
   };
 
   const apiFunctionCall = (urlParam) => {
-    let isValidate = validateUrl(urlParam);
-    let isError = validUrlErr && inputFieldErr && duplicateBadgeErr;
-    if (isValidate && !isError) {
-      // dispatch(closeError());
-      // setError(false);
-      // if (!isError) {
-      console.log("ehlo");
-      axios
-        .post("https://linkeeper-backend.herokuapp.com/parse", {
-          // .post("http://localhost:5000/parse", {
-          url: urlParam,
-        })
-        .then((res) => {
-          setSuggestionsArr(res.data.results);
-          setImageUrl(res.data.logo);
-          setShortUrlTitle(res.data.title);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      //}
-    } else {
-      //setError(true);
-      setValidUrlErr(true);
-      dispatch(showError({ type: "error", message: "Invalid url format" }));
-      dispatch(stopLoader());
-    }
+    axios
+      .post("https://linkeeper-backend.herokuapp.com/parse", {
+        // .post("http://localhost:5000/parse", {
+        url: urlParam,
+      })
+      .then((res) => {
+        setSuggestionsArr(res.data.results);
+        setImageUrl(res.data.logo);
+        setShortUrlTitle(res.data.title);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const optimisedFunctionCall = useCallback(
@@ -331,6 +318,26 @@ const Modal = () => {
   };
 
   useEffect(() => {
+    if (inputFieldErr) {
+      dispatch(
+        showError({ type: "error", message: "Cannot leave fields empty!" })
+      );
+    }
+  }, [inputFieldErr]);
+
+  useEffect(() => {
+    if (validUrlErr) {
+      dispatch(showError({ type: "error", message: "Invalid url format!" }));
+    }
+  }, [validUrlErr]);
+
+  useEffect(() => {
+    if (duplicateUrlErr) {
+      dispatch(showError({ type: "error", message: "Url already exist!" }));
+    }
+  }, [duplicateUrlErr]);
+
+  useEffect(() => {
     if (dropDownArray.length && showDropdown) {
       newBadgeInput.current.children[0].children[0].value = "";
       dispatch(badgeUnselected());
@@ -356,13 +363,12 @@ const Modal = () => {
   useEffect(() => {
     if (urlState.duplicateUrl) {
       //setError(true);
-      setDuplicateBadgeErr(true);
-      dispatch(showError({ type: "error", message: "Url already exist!" }));
+      //dispatch(showError({ type: "error", message: "Url already exist!" }));
+      setDuplicateUrlErr(true);
       dispatch(stopLoader());
     } else {
-      console.log("helo5");
       //setError(false);
-      setDuplicateBadgeErr(false);
+      setDuplicateUrlErr(false);
     }
   }, [urlState]);
 
