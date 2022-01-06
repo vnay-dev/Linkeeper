@@ -22,7 +22,7 @@ const SearchFilterReducer = (state = initialState, action) => {
           return resultArr.length ? urlCard : null;
         });
       }
-
+      console.log('helo')
       return {
         searchFlag: true,
         filteredList: filteredArray,

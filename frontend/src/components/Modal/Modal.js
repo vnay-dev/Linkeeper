@@ -260,8 +260,6 @@ const Modal = () => {
       if (errorState.visibility) {
         dispatch(closeError());
       }
-      //newBadgeInput.current.children[0].children[0].value = ""
-      //setShowDropdown(false)
     }
   };
 

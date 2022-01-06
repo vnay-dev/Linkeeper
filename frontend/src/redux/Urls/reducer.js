@@ -14,7 +14,7 @@ const UrlReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_URL:
       return {
-        urls: [...state.urls, action.payload],
+        urls: [action.payload, ...state.urls],
         duplicateUrl: state.duplicateUrl,
       };
 

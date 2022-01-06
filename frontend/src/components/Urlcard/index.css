@@ -26,12 +26,12 @@
 }
 
 .delete-bin-icon {
-  opacity: 0;
+  opacity: 0.5;
 }
 .delete-bin-icon:hover {
   cursor: pointer;
   opacity: 1;
-  transition: 0.1s;
+  transition: ease-in 0.05s;
 }
 
 .urlCard a {
