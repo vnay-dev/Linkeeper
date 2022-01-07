@@ -101,7 +101,19 @@ const Modal = () => {
     suggestionCanvas.current.className = "suggestion-canvas";
   };
 
+  const checkErrorBeforeSubmit = () => {
+    if (inputFieldErr) {
+      dispatch(
+        showError({ type: "error", message: "Cannot leave fields empty!" })
+      );
+    }
+    if (duplicateUrlErr) {
+      dispatch(showError({ type: "error", message: "Url already exist!" }));
+    }
+  };
+
   const storeData = () => {
+    checkErrorBeforeSubmit();
     let flag =
       validator() && !validUrlErr && !inputFieldErr && !duplicateUrlErr;
     if (flag) {
@@ -216,7 +228,8 @@ const Modal = () => {
 
   const addBadgeFromRecommendation = (selectedBadge) => {
     let itemFound = badgeStoreArray.currentBadges.find((item) => {
-      return item.match(selectedBadge);
+      //return item.match(selectedBadge);
+      return item == selectedBadge;
     });
     if (!!itemFound) {
       showDuplicateBadgeError();
@@ -267,7 +280,6 @@ const Modal = () => {
   const apiFunctionCall = (urlParam) => {
     axios
       .post("https://linkeeper-backend.herokuapp.com/parse", {
-        // .post("http://localhost:5000/parse", {
         url: urlParam,
       })
       .then((res) => {
@@ -332,10 +344,13 @@ const Modal = () => {
   }, [validUrlErr]);
 
   useEffect(() => {
-    if (duplicateUrlErr) {
+    if (urlState.duplicateUrl) {
       dispatch(showError({ type: "error", message: "Url already exist!" }));
+      setDuplicateUrlErr(true);
+    } else {
+      setDuplicateUrlErr(false);
     }
-  }, [duplicateUrlErr]);
+  }, [urlState]);
 
   useEffect(() => {
     if (dropDownArray.length && showDropdown) {

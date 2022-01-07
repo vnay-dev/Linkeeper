@@ -15,12 +15,11 @@ body {
   padding: 1em 23em;
 }
 
-@media only screen and (max-width: 811px) {
+@media only screen and (max-width: 821px) {
   .container {
     padding: 1em 8em;
   }
 }
-
 
 @media only screen and (max-width: 428px) {
   .container {

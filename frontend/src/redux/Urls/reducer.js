@@ -50,7 +50,7 @@ const UrlReducer = (state = initialState, action) => {
 
     case DUPLICATE_URL_CHECK:
       let duplicateUrl = state.urls.filter((item) => {
-        return item.url.includes(action.payload);
+        return true ? item.url == action.payload : false;
       });
       if (duplicateUrl.length) {
         return {

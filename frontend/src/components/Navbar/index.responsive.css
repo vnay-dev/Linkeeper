@@ -4,7 +4,7 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 414px) {
   .toolbar {
     margin: 0em;
   }
