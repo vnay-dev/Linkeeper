@@ -6,7 +6,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   addBadge,
   addBadgeToCurrent,
-  addNewBadge,
   addSelectionActivityArray,
   badgeSelected,
   badgeUnselected,
@@ -31,6 +30,8 @@ import debounce from "lodash.debounce";
 import { Card, CardContent, TextField, Button } from "@mui/material";
 import SuggestionBadge from "../BadgeContainer/SuggestionBadges";
 import SelectedBadge from "../BadgeContainer/SelectedBadges";
+import { createID } from "./utils";
+import { useWindowDimensions } from "../utils";
 
 const Modal = () => {
   const dispatch = useDispatch();
@@ -48,29 +49,16 @@ const Modal = () => {
   const [suggestionsArr, setSuggestionsArr] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [shortUrlTitle, setShortUrlTitle] = useState("");
-  //const [isError, setError] = useState(false);
+  const [urlClearButton, setUrlClearButton] = useState(false);
 
   const [validUrlErr, setValidUrlErr] = useState(false);
   const [inputFieldErr, setInputFieldErr] = useState(false);
   const [duplicateUrlErr, setDuplicateUrlErr] = useState(false);
 
-  const [urlClearButton, setUrlClearButton] = useState(false);
-
   const newBadgeInput = useRef();
   const currentBadgeList = useRef();
   const urlInputText = useRef();
   const suggestionCanvas = useRef();
-
-  const createID = () => {
-    var milliSec = new Date().getTime();
-    var idFormat = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-    var uuid = idFormat.replace(/[xy]/g, function (c) {
-      var r = (milliSec + Math.random() * 16) % 16 | 0; // learn...
-      milliSec = Math.floor(milliSec / 16);
-      return (c === "x" ? r : (r & 0x3) | 0x8).toString(16);
-    });
-    return uuid;
-  };
 
   const badgeValidator = () => {
     if (badgeStoreArray.currentBadges.length) {
@@ -82,14 +70,9 @@ const Modal = () => {
 
   const validator = () => {
     if (!(urlText && badgeValidator())) {
-      //setError(true);
       setInputFieldErr(true);
-      // dispatch(
-      //   showError({ type: "error", message: "Cannot leave fields empty!" })
-      // );
       return false;
     }
-    //setError(false);
     setInputFieldErr(false);
     return true;
   };
@@ -106,20 +89,24 @@ const Modal = () => {
       dispatch(
         showError({ type: "error", message: "Cannot leave fields empty!" })
       );
+      return false;
     }
     if (duplicateUrlErr) {
       dispatch(showError({ type: "error", message: "Url already exist!" }));
+      return false;
     }
+    return true;
   };
 
   const storeData = () => {
-    checkErrorBeforeSubmit();
     let flag =
-      validator() && !validUrlErr && !inputFieldErr && !duplicateUrlErr;
+      checkErrorBeforeSubmit() &&
+      validator() &&
+      !validUrlErr &&
+      !inputFieldErr &&
+      !duplicateUrlErr;
     if (flag) {
       setUrlClearButton(false);
-      // setError(false);
-      //setSubmitDataErr(false);
       dispatch(closeError());
       let id = createID();
       dispatch(
@@ -161,8 +148,6 @@ const Modal = () => {
   };
 
   const showDuplicateBadgeError = () => {
-    //setError(true);
-    //setDuplicateBadgeErr(true);
     dispatch(showError({ type: "error", message: "Badge already added!" }));
   };
 
@@ -177,11 +162,9 @@ const Modal = () => {
 
   const validateUrl = (string) => {
     if (validUrl.isUri(string)) {
-      //setError(false);
       setValidUrlErr(false);
       return true;
     }
-    //setError(true);
     setValidUrlErr(true);
     return false;
   };
@@ -212,15 +195,11 @@ const Modal = () => {
           dispatch(duplicateUrlCheck(e.target.value));
           optimisedFunctionCall(finalUrl);
         } else {
-          //setError(true);
           setValidUrlErr(true);
-          //dispatch(showError({ type: "error", message: "Invalid url format" }));
           dispatch(stopLoader());
         }
       } else {
-        //setError(true);
         setValidUrlErr(true);
-        //dispatch(showError({ type: "error", message: "Invalid url format" }));
         dispatch(stopLoader());
       }
     }
@@ -228,7 +207,6 @@ const Modal = () => {
 
   const addBadgeFromRecommendation = (selectedBadge) => {
     let itemFound = badgeStoreArray.currentBadges.find((item) => {
-      //return item.match(selectedBadge);
       return item == selectedBadge;
     });
     if (!!itemFound) {
@@ -299,31 +277,6 @@ const Modal = () => {
 
   const { width } = useWindowDimensions();
 
-  function useWindowDimensions() {
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    );
-
-    useEffect(() => {
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
-      }
-
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    return windowDimensions;
-  }
-
-  function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return {
-      width,
-      height,
-    };
-  }
-
   const clearUrlInput = () => {
     urlInputText.current.children[0].children[0].value = "";
     dispatch(stopLoader());
@@ -377,12 +330,9 @@ const Modal = () => {
 
   useEffect(() => {
     if (urlState.duplicateUrl) {
-      //setError(true);
-      //dispatch(showError({ type: "error", message: "Url already exist!" }));
       setDuplicateUrlErr(true);
       dispatch(stopLoader());
     } else {
-      //setError(false);
       setDuplicateUrlErr(false);
     }
   }, [urlState]);
@@ -438,14 +388,6 @@ const Modal = () => {
           ) : null}
         </div>
         <div className="badge-formControl">
-          {/* <div className="addbadge-input"> */}
-          {/* <input
-              onKeyDown={(e) => toggleDropdownSelect(e)}
-              ref={newBadgeInput}
-              className="newBadgeInput"
-              onChange={(e) => searchBadge(e.target.value)}
-              placeholder="Add badge..."
-            /> */}
           <TextField
             onKeyDown={(e) => toggleDropdownSelect(e)}
             ref={newBadgeInput}
@@ -464,7 +406,6 @@ const Modal = () => {
               ) : null,
             }}
           />
-          {/* </div> */}
           {dropDownArray.length && showDropdown ? (
             <Dropdown listArray={dropDownArray} />
           ) : null}
@@ -474,57 +415,24 @@ const Modal = () => {
           className="selected-badges"
           ref={currentBadgeList}
         >
-          {/* <Typography
-          component={"span"}
-          className="selected-badges"
-          //sx={{ width: "36vw", marginTop: "0.5em" }}
-          ref={currentBadgeList}
-        > */}
-          {/* <TextField
-          placeholder="Badges..."
-          variant="outlined"
-          size="small"
-          sx={{ width: "36vw", marginTop: "0.5em" }}
-          //className="selected-badges"
-          ref={currentBadgeList}
-        /> */}
           {badgeStoreArray.selectionActivityArray.length ? (
             badgeStoreArray.selectionActivityArray.map((item, index) => {
               let badgeText = item;
-              return (
-                // <BadgeContainer
-                //   key={index}
-                //   label={item}
-                //   status={false}
-                //   onDelete={() => handleDelete(badgeText)}
-                //   onClick={() => addBadgeFromRecommendation(badgeText)}
-                //   setDoneIconState={setDoneIconState}
-                //   setClearIconState={setClearIconState}
-                //   setAddIconState={setAddIconState}
-                // />
-                width < 1280 ? (
-                  <SelectedBadge
-                    key={index}
-                    label={item}
-                    onClick={() => addBadgeFromRecommendation(badgeText)}
-                    onDelete={() => handleDelete(badgeText)}
-                    status={true}
-                    // doneState={doneIconState}
-                    // clearState={clearIconState}
-                    // addState={addIconState}
-                  />
-                ) : (
-                  <SelectedBadge
-                    key={index}
-                    label={item}
-                    //onClick={() => addBadgeFromRecommendation(badgeText)}
-                    onDelete={() => handleDelete(badgeText)}
-                    status={false}
-                    // doneState={doneIconState}
-                    // clearState={clearIconState}
-                    // addState={addIconState}
-                  />
-                )
+              return width < 1280 ? (
+                <SelectedBadge
+                  key={index}
+                  label={item}
+                  onClick={() => addBadgeFromRecommendation(badgeText)}
+                  onDelete={() => handleDelete(badgeText)}
+                  status={true}
+                />
+              ) : (
+                <SelectedBadge
+                  key={index}
+                  label={item}
+                  onDelete={() => handleDelete(badgeText)}
+                  status={false}
+                />
               );
             })
           ) : (

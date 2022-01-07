@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addBadge,
   addBadgeToCurrent,
   addSelectionActivityArray,
   badgeSelected,
@@ -10,8 +9,10 @@ import { resetAddBadgeFromDropDown } from "../../redux/DropDown/action";
 import { showError } from "../../redux/Error/action";
 
 const Dropdown = ({ listArray }) => {
+
   const dispatch = useDispatch();
   const selectedBadge = useRef();
+  
   const badgeStoreArray = useSelector((state) => state.BadgeReducer);
   const dropDownToggle = useSelector((state) => state.DropDownReducer);
 

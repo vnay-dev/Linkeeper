@@ -1,23 +1,15 @@
 import "./App.css";
 import NavBar from "./components/Navbar";
 import Modal from "./components/Modal";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import UrlCard from "./components/Urlcard";
 import Alert from "@mui/material/Alert";
-import { StylesProvider } from "@material-ui/core/styles";
 
 function App() {
-  const btnState = useSelector((state) => state.BtnReducer);
   const urlArray = useSelector((state) => state.UrlReducer);
   const errorState = useSelector((state) => state.ErrorReducer);
   const searchResults = useSelector((state) => state.SearchFilterReducer);
-
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   console.log("search results", searchResults.filteredList);
-  // }, [searchResults]);
 
   const showSearchResults = () => {
     return searchResults.filteredList.length

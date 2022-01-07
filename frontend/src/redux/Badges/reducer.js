@@ -23,7 +23,6 @@ const BadgeReducer = (state = initialState, action) => {
     case ADD_BADGE: // current list
       return {
         badges: [...state.badges, action.payload],
-        //currentBadges: [...state.currentBadges, action.payload],
         currentBadges: state.currentBadges,
         selectionActivityArray: state.selectionActivityArray,
         badgeSelectedFlag: state.badgeSelectedFlag,

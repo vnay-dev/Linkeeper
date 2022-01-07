@@ -1,12 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useDispatch } from "react-redux";
 import {
   addBadge,
+  addBadgeToCurrent,
+  addSelectionActivityArray,
+  badgeSelected,
   removeBadgeFromCurrent,
   removeBadgeFromGlobal,
 } from "../../../redux/Badges/action";
+import { useWindowDimensions } from "../../utils";
+import { closeError } from "../../../redux/Error/action";
 
 const SelectedBadge = ({ label, status, onClick, onDelete }) => {
   const [doneState, setDoneState] = useState(false);
@@ -16,7 +21,7 @@ const SelectedBadge = ({ label, status, onClick, onDelete }) => {
   const [doneStateDesktop, setDoneStateDesktop] = useState(false);
   const [clearStateDesktop, setClearStateDesktop] = useState(false);
   const [toggleClearDesktop, setToggleClearDesktop] = useState(false);
-  const [state4, setState4] = useState(false);
+  const [doneActionToggle, setDoneActionToggle] = useState(false);
 
   const parentContainer = useRef();
   const dispatch = useDispatch();
@@ -35,31 +40,6 @@ const SelectedBadge = ({ label, status, onClick, onDelete }) => {
 
   const { width } = useWindowDimensions();
 
-  function useWindowDimensions() {
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    );
-
-    useEffect(() => {
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
-      }
-
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    return windowDimensions;
-  }
-
-  function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return {
-      width,
-      height,
-    };
-  }
-
   const unSelectBadge = () => {
     onDelete();
     setDoneStateDesktop(true);
@@ -74,9 +54,12 @@ const SelectedBadge = ({ label, status, onClick, onDelete }) => {
     setDoneStateDesktop(false);
     setToggleClearDesktop(false);
     setClearStateDesktop(true);
-    setState4(true);
+    setDoneActionToggle(true);
     let selectedBadge = parentContainer.current.children[0].textContent;
     dispatch(addBadge(selectedBadge));
+    dispatch(addBadgeToCurrent(selectedBadge));
+    dispatch(badgeSelected(selectedBadge));
+    dispatch(closeError());
   };
 
   const clickTrigger = () => {
@@ -112,7 +95,7 @@ const SelectedBadge = ({ label, status, onClick, onDelete }) => {
   };
 
   const toggleHoverState = (flag) => {
-    if (!state4) {
+    if (!doneActionToggle) {
       if (flag) {
         setDoneStateDesktop(false);
       } else {
@@ -121,7 +104,7 @@ const SelectedBadge = ({ label, status, onClick, onDelete }) => {
     }
     setClearStateDesktop(true);
     setToggleClearDesktop(false);
-    setState4(false);
+    setDoneActionToggle(false);
   };
 
   const showDoneIconDesktop = () => {
@@ -129,7 +112,6 @@ const SelectedBadge = ({ label, status, onClick, onDelete }) => {
       <CheckCircleOutlineIcon
         className="done-icon"
         onMouseEnter={() => toggleHoverState(false)}
-        //onClick={() => checkForMobileDevices()}
       />
     ) : null;
   };

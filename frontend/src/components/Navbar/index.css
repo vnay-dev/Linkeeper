@@ -3,6 +3,9 @@
 }
 
 .toolbar {
-  /* background: rgb(182, 179, 179); */
   margin: 0em 21.5em;
+}
+
+::placeholder {
+  color: white;
 }
