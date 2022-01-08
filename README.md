@@ -1,7 +1,7 @@
 # Linkeeper
 
 ## Project Description
-Web app that enables us to bookmark web links using related badges.
+Web app that enables us to bookmark web links using auto generated badges.
 
 ## Key Highlights
 Linkeeper renders the following features -
