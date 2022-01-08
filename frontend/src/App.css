@@ -11,18 +11,28 @@ body {
   flex-direction: column;
 }
 
-.container {
+.modal-container {
   padding: 1em 23em;
 }
 
-@media only screen and (max-width: 821px) {
-  .container {
+.card-container {
+  padding: 1em 0.5em;
+}
+
+@media only screen and (max-width: 1024px) {
+  .modal-container {
     padding: 1em 8em;
+  }
+  .card-container {
+    padding: 0em 8em;
   }
 }
 
 @media only screen and (max-width: 428px) {
-  .container {
+  .modal-container {
     padding: 1em;
+  }
+  .card-container {
+    padding: 0em 1em;
   }
 }

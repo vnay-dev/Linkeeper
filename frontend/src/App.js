@@ -51,8 +51,10 @@ function App() {
         </Alert>
       )}
       <NavBar />
-      <div className="container">
+      <div className="modal-container">
         <Modal />
+      </div>
+      <div className="card-container">
         {searchResults.searchFlag ? showSearchResults() : showCurrentUrls()}
       </div>
     </div>
