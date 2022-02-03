@@ -14,7 +14,7 @@ Linkeeper renders the following features -
 Front-end: ReactJs, Redux, Material UI.<br>
 Backend: NodeJs, Express.
 
-Frontend has been deployed in Firebase.
+Frontend has been deployed in Firebase.<br>
 Backend has been hosted in Heroku.
 
 ## Instructions for Setup (Windows User)
