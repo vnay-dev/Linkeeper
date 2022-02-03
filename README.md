@@ -14,6 +14,9 @@ Linkeeper renders the following features -
 Front-end: ReactJs, Redux, Material UI.<br>
 Backend: NodeJs, Express.
 
+Frontend has been deployed in Firebase.
+Backend has been hosted in Heroku.
+
 ## Instructions for Setup (Windows User)
 1. Install NodeJs from https://nodejs.org/en/download/
 2. Clone this github repo: https://github.com/vnay-dev/Linkeeper.git
